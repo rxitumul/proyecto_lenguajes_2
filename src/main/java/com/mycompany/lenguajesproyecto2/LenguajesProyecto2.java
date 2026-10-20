@@ -4,6 +4,8 @@
 
 package com.mycompany.lenguajesproyecto2;
 
+import com.mycompany.lenguajesproyecto2.frontEnd.PaginaPrincipal.MenuEditor;
+
 /**
  *
  * @author ricardocastillo
@@ -11,6 +13,7 @@ package com.mycompany.lenguajesproyecto2;
 public class LenguajesProyecto2 {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        MenuEditor menu = new MenuEditor();
+        menu.setVisible(true);
     }
 }

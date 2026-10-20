@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.mycompany.lenguajesproyecto2.PromptzalParserTest" time="0.074" tests="8" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="26"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/ricardocastillo/NetBeansProjects/LenguajesProyecto2/target/test-classes:/Users/ricardocastillo/NetBeansProjects/LenguajesProyecto2/target/classes:/Users/ricardocastillo/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.2/junit-jupiter-5.10.2.jar:/Users/ricardocastillo/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.2/junit-jupiter-api-5.10.2.jar:/Users/ricardocastillo/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/ricardocastillo/.m2/repository/org/junit/platform/junit-platform-commons/1.10.2/junit-platform-commons-1.10.2.jar:/Users/ricardocastillo/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/ricardocastillo/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.2/junit-jupiter-params-5.10.2.jar:/Users/ricardocastillo/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.2/junit-jupiter-engine-5.10.2.jar:/Users/ricardocastillo/.m2/repository/org/junit/platform/junit-platform-engine/1.10.2/junit-platform-engine-1.10.2.jar:"/>
+    <property name="java.vm.vendor" value="Homebrew"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="26"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="GT"/>
+    <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/26.0.2/libexec/openjdk.jdk/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/ricardocastillo/NetBeansProjects/LenguajesProyecto2/target/surefire/surefirebooter-20261020004500108_3.jar /Users/ricardocastillo/NetBeansProjects/LenguajesProyecto2/target/surefire 2026-10-20T00-44-58_704-jvmRun1 surefire-20261020004500108_1tmp surefire_0-20261020004500108_2tmp"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/Users/ricardocastillo/NetBeansProjects/LenguajesProyecto2/target/test-classes:/Users/ricardocastillo/NetBeansProjects/LenguajesProyecto2/target/classes:/Users/ricardocastillo/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.2/junit-jupiter-5.10.2.jar:/Users/ricardocastillo/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.2/junit-jupiter-api-5.10.2.jar:/Users/ricardocastillo/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/ricardocastillo/.m2/repository/org/junit/platform/junit-platform-commons/1.10.2/junit-platform-commons-1.10.2.jar:/Users/ricardocastillo/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/ricardocastillo/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.2/junit-jupiter-params-5.10.2.jar:/Users/ricardocastillo/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.2/junit-jupiter-engine-5.10.2.jar:/Users/ricardocastillo/.m2/repository/org/junit/platform/junit-platform-engine/1.10.2/junit-platform-engine-1.10.2.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/ricardocastillo"/>
+    <property name="user.language" value="es"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-07-21"/>
+    <property name="java.home" value="/opt/homebrew/Cellar/openjdk/26.0.2/libexec/openjdk.jdk/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/ricardocastillo/NetBeansProjects/LenguajesProyecto2"/>
+    <property name="java.vm.compressedOopsMode" value="Non-zero disjoint base"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="apple.awt.application.name" value="ForkedBooter"/>
+    <property name="surefire.real.class.path" value="/Users/ricardocastillo/NetBeansProjects/LenguajesProyecto2/target/surefire/surefirebooter-20261020004500108_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.runtime.version" value="26.0.2"/>
+    <property name="user.name" value="ricardocastillo"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="27.0"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Homebrew"/>
+    <property name="localRepository" value="/Users/ricardocastillo/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="java.io.tmpdir" value="/var/folders/gr/m0sqyzls4z14yzcw_4y7g32h0000gn/T/"/>
+    <property name="java.version" value="26.0.2"/>
+    <property name="user.dir" value="/Users/ricardocastillo/NetBeansProjects/LenguajesProyecto2"/>
+    <property name="os.arch" value="aarch64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/ricardocastillo/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Homebrew"/>
+    <property name="java.vm.version" value="26.0.2"/>
+    <property name="stdin.encoding" value="UTF-8"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.class.version" value="70.0"/>
+  </properties>
+  <testcase name="testErrorFaltaFlechaEnComando" classname="com.mycompany.lenguajesproyecto2.PromptzalParserTest" time="0.027">
+    <system-out><![CDATA[line: 1 col: 1 match: --AGENTE--
+action [46] { return agregarToken("AGENTE", yytext()); }
+line: 1 col: 7 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 8 match: --Bot--
+action [75] { return agregarToken("ID", yytext()); }
+line: 1 col: 11 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 12 match: --{--
+action [63] { return agregarToken("LLAVE_A", yytext()); }
+line: 1 col: 13 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 5 match: --contexto--
+action [47] { return agregarToken("CONTEXTO", yytext()); }
+line: 2 col: 13 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 14 match: --=--
+action [67] { return agregarToken("IGUAL", yytext()); }
+line: 2 col: 15 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 16 match: --"test"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 2 col: 22 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 5 match: --PREGUNTAR--
+action [54] { return agregarToken("COMANDO_IA", yytext()); }
+line: 3 col: 14 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 15 match: --"hola"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 3 col: 21 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 22 match: --variableDestino--
+action [75] { return agregarToken("ID", yytext()); }
+line: 3 col: 37 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 4 col: 1 match: --}--
+action [64] { return agregarToken("LLAVE_C", yytext()); }
+line: 4 col: 2 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 1 match: --EJECUTAR--
+action [49] { return agregarToken("EJECUTAR", yytext()); }
+line: 5 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 10 match: --Bot--
+action [75] { return agregarToken("ID", yytext()); }
+line: 5 col: 13 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 6 col: 1 match: --EXPORTAR--
+action [50] { return agregarToken("EXPORTAR", yytext()); }
+line: 6 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 6 col: 10 match: --variableDestino--
+action [75] { return agregarToken("ID", yytext()); }
+line: 6 col: 25 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+]]></system-out>
+  </testcase>
+  <testcase name="testErrorFaltaContexto" classname="com.mycompany.lenguajesproyecto2.PromptzalParserTest" time="0.003">
+    <system-out><![CDATA[line: 1 col: 1 match: --AGENTE--
+action [46] { return agregarToken("AGENTE", yytext()); }
+line: 1 col: 7 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 8 match: --Bot--
+action [75] { return agregarToken("ID", yytext()); }
+line: 1 col: 11 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 12 match: --{--
+action [63] { return agregarToken("LLAVE_A", yytext()); }
+line: 1 col: 13 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 5 match: --variable--
+action [48] { return agregarToken("VARIABLE", yytext()); }
+line: 2 col: 13 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 14 match: --x--
+action [75] { return agregarToken("ID", yytext()); }
+line: 2 col: 15 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 16 match: --=--
+action [67] { return agregarToken("IGUAL", yytext()); }
+line: 2 col: 17 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 18 match: --10--
+action [79] { return agregarToken("NUMERO", yytext()); }
+line: 2 col: 20 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 5 match: --PREGUNTAR--
+action [54] { return agregarToken("COMANDO_IA", yytext()); }
+line: 3 col: 14 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 15 match: --"test"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 3 col: 21 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 22 match: --->--
+action [62] { return agregarToken("FLECHA", yytext()); }
+line: 3 col: 24 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 25 match: --res--
+action [75] { return agregarToken("ID", yytext()); }
+line: 3 col: 28 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 4 col: 1 match: --}--
+action [64] { return agregarToken("LLAVE_C", yytext()); }
+line: 4 col: 2 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 1 match: --EJECUTAR--
+action [49] { return agregarToken("EJECUTAR", yytext()); }
+line: 5 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 10 match: --Bot--
+action [75] { return agregarToken("ID", yytext()); }
+line: 5 col: 13 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 6 col: 1 match: --EXPORTAR--
+action [50] { return agregarToken("EXPORTAR", yytext()); }
+line: 6 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 6 col: 10 match: --res--
+action [75] { return agregarToken("ID", yytext()); }
+line: 6 col: 13 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+]]></system-out>
+  </testcase>
+  <testcase name="testErrorSinExportar" classname="com.mycompany.lenguajesproyecto2.PromptzalParserTest" time="0.002">
+    <system-out><![CDATA[line: 1 col: 1 match: --AGENTE--
+action [46] { return agregarToken("AGENTE", yytext()); }
+line: 1 col: 7 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 8 match: --Bot--
+action [75] { return agregarToken("ID", yytext()); }
+line: 1 col: 11 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 12 match: --{--
+action [63] { return agregarToken("LLAVE_A", yytext()); }
+line: 1 col: 13 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 5 match: --contexto--
+action [47] { return agregarToken("CONTEXTO", yytext()); }
+line: 2 col: 13 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 14 match: --=--
+action [67] { return agregarToken("IGUAL", yytext()); }
+line: 2 col: 15 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 16 match: --"test"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 2 col: 22 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 5 match: --PREGUNTAR--
+action [54] { return agregarToken("COMANDO_IA", yytext()); }
+line: 3 col: 14 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 15 match: --"hola"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 3 col: 21 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 22 match: --->--
+action [62] { return agregarToken("FLECHA", yytext()); }
+line: 3 col: 24 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 25 match: --res--
+action [75] { return agregarToken("ID", yytext()); }
+line: 3 col: 28 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 4 col: 1 match: --}--
+action [64] { return agregarToken("LLAVE_C", yytext()); }
+line: 4 col: 2 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 1 match: --EJECUTAR--
+action [49] { return agregarToken("EJECUTAR", yytext()); }
+line: 5 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 10 match: --Bot--
+action [75] { return agregarToken("ID", yytext()); }
+line: 5 col: 13 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+]]></system-out>
+  </testcase>
+  <testcase name="testErrorSinEjecucion" classname="com.mycompany.lenguajesproyecto2.PromptzalParserTest" time="0.002">
+    <system-out><![CDATA[line: 1 col: 1 match: --AGENTE--
+action [46] { return agregarToken("AGENTE", yytext()); }
+line: 1 col: 7 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 8 match: --Bot--
+action [75] { return agregarToken("ID", yytext()); }
+line: 1 col: 11 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 12 match: --{--
+action [63] { return agregarToken("LLAVE_A", yytext()); }
+line: 1 col: 13 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 5 match: --contexto--
+action [47] { return agregarToken("CONTEXTO", yytext()); }
+line: 2 col: 13 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 14 match: --=--
+action [67] { return agregarToken("IGUAL", yytext()); }
+line: 2 col: 15 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 16 match: --"test"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 2 col: 22 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 5 match: --PREGUNTAR--
+action [54] { return agregarToken("COMANDO_IA", yytext()); }
+line: 3 col: 14 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 15 match: --"hola"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 3 col: 21 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 22 match: --->--
+action [62] { return agregarToken("FLECHA", yytext()); }
+line: 3 col: 24 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 25 match: --res--
+action [75] { return agregarToken("ID", yytext()); }
+line: 3 col: 28 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 4 col: 1 match: --}--
+action [64] { return agregarToken("LLAVE_C", yytext()); }
+line: 4 col: 2 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 1 match: --EXPORTAR--
+action [50] { return agregarToken("EXPORTAR", yytext()); }
+line: 5 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 10 match: --res--
+action [75] { return agregarToken("ID", yytext()); }
+line: 5 col: 13 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+]]></system-out>
+  </testcase>
+  <testcase name="testErrorFaltaCierreLlave" classname="com.mycompany.lenguajesproyecto2.PromptzalParserTest" time="0.003">
+    <system-out><![CDATA[line: 1 col: 1 match: --AGENTE--
+action [46] { return agregarToken("AGENTE", yytext()); }
+line: 1 col: 7 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 8 match: --Bot--
+action [75] { return agregarToken("ID", yytext()); }
+line: 1 col: 11 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 12 match: --{--
+action [63] { return agregarToken("LLAVE_A", yytext()); }
+line: 1 col: 13 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 5 match: --contexto--
+action [47] { return agregarToken("CONTEXTO", yytext()); }
+line: 2 col: 13 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 14 match: --=--
+action [67] { return agregarToken("IGUAL", yytext()); }
+line: 2 col: 15 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 16 match: --"test"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 2 col: 22 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 5 match: --PREGUNTAR--
+action [54] { return agregarToken("COMANDO_IA", yytext()); }
+line: 3 col: 14 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 15 match: --"hola"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 3 col: 21 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 22 match: --->--
+action [62] { return agregarToken("FLECHA", yytext()); }
+line: 3 col: 24 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 25 match: --res--
+action [75] { return agregarToken("ID", yytext()); }
+line: 3 col: 28 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 4 col: 1 match: --EJECUTAR--
+action [49] { return agregarToken("EJECUTAR", yytext()); }
+line: 4 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 4 col: 10 match: --Bot--
+action [75] { return agregarToken("ID", yytext()); }
+line: 4 col: 13 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 1 match: --EXPORTAR--
+action [50] { return agregarToken("EXPORTAR", yytext()); }
+line: 5 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 10 match: --res--
+action [75] { return agregarToken("ID", yytext()); }
+line: 5 col: 13 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+]]></system-out>
+  </testcase>
+  <testcase name="testProgramaCompletoConDirectivasVariablesYConectores" classname="com.mycompany.lenguajesproyecto2.PromptzalParserTest" time="0.006">
+    <system-out><![CDATA[line: 1 col: 1 match: --@version--
+action [43] { return agregarToken("DIRECTIVA", yytext()); }
+line: 1 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 10 match: --"2.0"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 1 col: 15 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 1 match: --@autor--
+action [43] { return agregarToken("DIRECTIVA", yytext()); }
+line: 2 col: 7 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 8 match: --"Ricardo Castillo"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 2 col: 26 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 1 match: --AGENTE--
+action [46] { return agregarToken("AGENTE", yytext()); }
+line: 3 col: 7 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 8 match: --Traductor--
+action [75] { return agregarToken("ID", yytext()); }
+line: 3 col: 17 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 18 match: --{--
+action [63] { return agregarToken("LLAVE_A", yytext()); }
+line: 3 col: 19 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 4 col: 5 match: --contexto--
+action [47] { return agregarToken("CONTEXTO", yytext()); }
+line: 4 col: 13 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 4 col: 14 match: --=--
+action [67] { return agregarToken("IGUAL", yytext()); }
+line: 4 col: 15 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 4 col: 16 match: --"Experto en traducci\u00F3n"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 4 col: 39 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 5 match: --variable--
+action [48] { return agregarToken("VARIABLE", yytext()); }
+line: 5 col: 13 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 14 match: --timeout--
+action [75] { return agregarToken("ID", yytext()); }
+line: 5 col: 21 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 22 match: --=--
+action [67] { return agregarToken("IGUAL", yytext()); }
+line: 5 col: 23 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 24 match: --30--
+action [79] { return agregarToken("NUMERO", yytext()); }
+line: 5 col: 26 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 27 match: --segundos--
+action [75] { return agregarToken("ID", yytext()); }
+line: 5 col: 35 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 6 col: 5 match: --variable--
+action [48] { return agregarToken("VARIABLE", yytext()); }
+line: 6 col: 13 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 6 col: 14 match: --temp--
+action [75] { return agregarToken("ID", yytext()); }
+line: 6 col: 18 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 6 col: 19 match: --=--
+action [67] { return agregarToken("IGUAL", yytext()); }
+line: 6 col: 20 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 6 col: 21 match: --0.7--
+action [78] { return agregarToken("NUMERO", yytext()); }
+line: 6 col: 24 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 7 col: 5 match: --variable--
+action [48] { return agregarToken("VARIABLE", yytext()); }
+line: 7 col: 13 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 7 col: 14 match: --promptBase--
+action [75] { return agregarToken("ID", yytext()); }
+line: 7 col: 24 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 7 col: 25 match: --=--
+action [67] { return agregarToken("IGUAL", yytext()); }
+line: 7 col: 26 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 7 col: 27 match: --"Traduce "--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 7 col: 37 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 7 col: 38 match: --+--
+action [68] { return agregarToken("MAS", yytext()); }
+line: 7 col: 39 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 7 col: 40 match: --variableTexto--
+action [75] { return agregarToken("ID", yytext()); }
+line: 7 col: 53 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 8 col: 5 match: --TRADUCIR--
+action [54] { return agregarToken("COMANDO_IA", yytext()); }
+line: 8 col: 13 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 8 col: 14 match: --promptBase--
+action [75] { return agregarToken("ID", yytext()); }
+line: 8 col: 24 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 8 col: 25 match: --SOBRE--
+action [58] { return agregarToken("CONECTOR", yytext()); }
+line: 8 col: 30 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 8 col: 31 match: --"tecnologia"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 8 col: 43 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 8 col: 44 match: --DESDE--
+action [58] { return agregarToken("CONECTOR", yytext()); }
+line: 8 col: 49 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 8 col: 50 match: --"es"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 8 col: 54 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 8 col: 55 match: --COMO--
+action [58] { return agregarToken("CONECTOR", yytext()); }
+line: 8 col: 59 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 8 col: 60 match: --"en"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 8 col: 64 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 8 col: 65 match: --->--
+action [62] { return agregarToken("FLECHA", yytext()); }
+line: 8 col: 67 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 8 col: 68 match: --traduccion--
+action [75] { return agregarToken("ID", yytext()); }
+line: 8 col: 78 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 9 col: 5 match: --RESUMIR--
+action [54] { return agregarToken("COMANDO_IA", yytext()); }
+line: 9 col: 12 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 9 col: 13 match: --CARGAR--
+action [51] { return agregarToken("CARGAR", yytext()); }
+line: 9 col: 19 match: --(--
+action [65] { return agregarToken("PAR_A", yytext()); }
+line: 9 col: 20 match: --"archivo.txt"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 9 col: 33 match: --)--
+action [66] { return agregarToken("PAR_C", yytext()); }
+line: 9 col: 34 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 9 col: 35 match: --->--
+action [62] { return agregarToken("FLECHA", yytext()); }
+line: 9 col: 37 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 9 col: 38 match: --resumenFinal--
+action [75] { return agregarToken("ID", yytext()); }
+line: 9 col: 50 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 10 col: 1 match: --}--
+action [64] { return agregarToken("LLAVE_C", yytext()); }
+line: 10 col: 2 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 11 col: 1 match: --AGENTE--
+action [46] { return agregarToken("AGENTE", yytext()); }
+line: 11 col: 7 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 11 col: 8 match: --Auditor--
+action [75] { return agregarToken("ID", yytext()); }
+line: 11 col: 15 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 11 col: 16 match: --{--
+action [63] { return agregarToken("LLAVE_A", yytext()); }
+line: 11 col: 17 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 12 col: 5 match: --contexto--
+action [47] { return agregarToken("CONTEXTO", yytext()); }
+line: 12 col: 13 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 12 col: 14 match: --=--
+action [67] { return agregarToken("IGUAL", yytext()); }
+line: 12 col: 15 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 12 col: 16 match: --"Auditor de calidad"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 12 col: 36 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 13 col: 5 match: --ANALIZAR--
+action [54] { return agregarToken("COMANDO_IA", yytext()); }
+line: 13 col: 13 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 13 col: 14 match: --traduccion--
+action [75] { return agregarToken("ID", yytext()); }
+line: 13 col: 24 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 13 col: 25 match: --->--
+action [62] { return agregarToken("FLECHA", yytext()); }
+line: 13 col: 27 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 13 col: 28 match: --reporte--
+action [75] { return agregarToken("ID", yytext()); }
+line: 13 col: 35 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 14 col: 1 match: --}--
+action [64] { return agregarToken("LLAVE_C", yytext()); }
+line: 14 col: 2 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 15 col: 1 match: --EJECUTAR--
+action [49] { return agregarToken("EJECUTAR", yytext()); }
+line: 15 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 15 col: 10 match: --Traductor--
+action [75] { return agregarToken("ID", yytext()); }
+line: 15 col: 19 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 16 col: 1 match: --EJECUTAR--
+action [49] { return agregarToken("EJECUTAR", yytext()); }
+line: 16 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 16 col: 10 match: --Auditor--
+action [75] { return agregarToken("ID", yytext()); }
+line: 16 col: 17 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 17 col: 1 match: --EXPORTAR--
+action [50] { return agregarToken("EXPORTAR", yytext()); }
+line: 17 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 17 col: 10 match: --traduccion--
+action [75] { return agregarToken("ID", yytext()); }
+line: 17 col: 20 match: --,--
+action [69] { return agregarToken("COMA", yytext()); }
+line: 17 col: 21 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 17 col: 22 match: --resumenFinal--
+action [75] { return agregarToken("ID", yytext()); }
+line: 17 col: 34 match: --,--
+action [69] { return agregarToken("COMA", yytext()); }
+line: 17 col: 35 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 17 col: 36 match: --reporte--
+action [75] { return agregarToken("ID", yytext()); }
+line: 17 col: 43 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+]]></system-out>
+  </testcase>
+  <testcase name="testProgramaMinimoValido" classname="com.mycompany.lenguajesproyecto2.PromptzalParserTest" time="0.002">
+    <system-out><![CDATA[line: 1 col: 1 match: --AGENTE--
+action [46] { return agregarToken("AGENTE", yytext()); }
+line: 1 col: 7 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 8 match: --Experto--
+action [75] { return agregarToken("ID", yytext()); }
+line: 1 col: 15 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 16 match: --{--
+action [63] { return agregarToken("LLAVE_A", yytext()); }
+line: 1 col: 17 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 5 match: --contexto--
+action [47] { return agregarToken("CONTEXTO", yytext()); }
+line: 2 col: 13 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 14 match: --=--
+action [67] { return agregarToken("IGUAL", yytext()); }
+line: 2 col: 15 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 16 match: --"Eres un asistente"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 2 col: 35 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 5 match: --PREGUNTAR--
+action [54] { return agregarToken("COMANDO_IA", yytext()); }
+line: 3 col: 14 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 15 match: --"Hola"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 3 col: 21 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 22 match: --->--
+action [62] { return agregarToken("FLECHA", yytext()); }
+line: 3 col: 24 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 25 match: --salida--
+action [75] { return agregarToken("ID", yytext()); }
+line: 3 col: 31 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 4 col: 1 match: --}--
+action [64] { return agregarToken("LLAVE_C", yytext()); }
+line: 4 col: 2 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 1 match: --EJECUTAR--
+action [49] { return agregarToken("EJECUTAR", yytext()); }
+line: 5 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 10 match: --Experto--
+action [75] { return agregarToken("ID", yytext()); }
+line: 5 col: 17 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 6 col: 1 match: --EXPORTAR--
+action [50] { return agregarToken("EXPORTAR", yytext()); }
+line: 6 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 6 col: 10 match: --salida--
+action [75] { return agregarToken("ID", yytext()); }
+line: 6 col: 16 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+]]></system-out>
+  </testcase>
+  <testcase name="testErrorCargarSinParentesisCierre" classname="com.mycompany.lenguajesproyecto2.PromptzalParserTest" time="0.001">
+    <system-out><![CDATA[line: 1 col: 1 match: --AGENTE--
+action [46] { return agregarToken("AGENTE", yytext()); }
+line: 1 col: 7 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 8 match: --Bot--
+action [75] { return agregarToken("ID", yytext()); }
+line: 1 col: 11 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 1 col: 12 match: --{--
+action [63] { return agregarToken("LLAVE_A", yytext()); }
+line: 1 col: 13 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 5 match: --contexto--
+action [47] { return agregarToken("CONTEXTO", yytext()); }
+line: 2 col: 13 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 14 match: --=--
+action [67] { return agregarToken("IGUAL", yytext()); }
+line: 2 col: 15 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 2 col: 16 match: --"test"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 2 col: 22 match: --\u000A    --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 5 match: --RESUMIR--
+action [54] { return agregarToken("COMANDO_IA", yytext()); }
+line: 3 col: 12 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 13 match: --CARGAR--
+action [51] { return agregarToken("CARGAR", yytext()); }
+line: 3 col: 19 match: --(--
+action [65] { return agregarToken("PAR_A", yytext()); }
+line: 3 col: 20 match: --"datos.txt"--
+action [72] { return agregarToken("CADENA", yytext()); }
+line: 3 col: 31 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 32 match: --->--
+action [62] { return agregarToken("FLECHA", yytext()); }
+line: 3 col: 34 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 3 col: 35 match: --res--
+action [75] { return agregarToken("ID", yytext()); }
+line: 3 col: 38 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 4 col: 1 match: --}--
+action [64] { return agregarToken("LLAVE_C", yytext()); }
+line: 4 col: 2 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 1 match: --EJECUTAR--
+action [49] { return agregarToken("EJECUTAR", yytext()); }
+line: 5 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 5 col: 10 match: --Bot--
+action [75] { return agregarToken("ID", yytext()); }
+line: 5 col: 13 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+line: 6 col: 1 match: --EXPORTAR--
+action [50] { return agregarToken("EXPORTAR", yytext()); }
+line: 6 col: 9 match: -- --
+action [37] { /* Ignorar espacios */ }
+line: 6 col: 10 match: --res--
+action [75] { return agregarToken("ID", yytext()); }
+line: 6 col: 13 match: --\u000A--
+action [37] { /* Ignorar espacios */ }
+]]></system-out>
+  </testcase>
+</testsuite>
