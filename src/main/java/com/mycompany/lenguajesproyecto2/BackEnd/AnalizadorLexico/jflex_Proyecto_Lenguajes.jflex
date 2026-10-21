@@ -2,11 +2,12 @@ package com.mycompany.lenguajesproyecto2.BackEnd.AnalizadorLexico;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import com.mycompany.lenguajesproyecto2.BackEnd.BibliotecaCarpeta.BibliotecaDeTokens;
+import com.mycompany.lenguajesproyecto2.BackEnd.Reportes.ListasEnlazadas.ErrorLexico;
 
 %%
 %class PromptzalLexer
 %public
-%debug
 %line
 %column
 %unicode
@@ -14,8 +15,18 @@ import java.util.List;
 
 %{
     private List<TokenEntidad> tokensEncontrados = new ArrayList<>();
+    private List<ErrorLexico> erroresLexicos = new ArrayList<>();
+    private BibliotecaDeTokens biblioteca = new BibliotecaDeTokens();
+    private boolean eofRegistrado = false;
 
-    // Modificado: Agrega a la lista Y ADEMÁS retorna el token creado
+    public BibliotecaDeTokens getBiblioteca() {
+        return biblioteca;
+    }
+
+    public List<ErrorLexico> getErroresLexicos() {
+        return erroresLexicos;
+    }
+
     private TokenEntidad agregarToken(String tipo, String descripcion) {
         TokenEntidad nuevoToken = new TokenEntidad(tipo, descripcion, yyline + 1, yycolumn + 1);
         tokensEncontrados.add(nuevoToken);
@@ -27,11 +38,15 @@ import java.util.List;
     }
 %}
 
-Letra         = [a-zA-Z_]
-Digito        = [0-9]
-Identificador = {Letra}({Letra}|{Digito})*
-Directiva     = @{Identificador}
-Espacio       = [ \t\r\n]+
+Letra            = [a-zA-Z_]
+Digito           = [0-9]
+Identificador    = {Letra}({Letra}|{Digito})*
+Directiva        = @{Identificador}
+Espacio          = [ \t\r\n]+
+
+// Símbolos compuestos y simples reconocidos dinámicamente desde BibliotecaDeTokens
+SimboloCompuesto = "->" | "..." | "==" | "!=" | "<=" | ">=" | "&&" | "||" | "::" | "++" | "--"
+SimboloSimple    = "{" | "}" | "(" | ")" | "=" | "+" | "," | ";" | ":" | "." | "<" | ">" | "!" | "?" | "-" | "*" | "/" | "%" | "&" | "|" | "^" | "~" | "#" | "$"
 
 %%
 
@@ -40,50 +55,53 @@ Espacio       = [ \t\r\n]+
 "//".*          { /* Ignorar comentarios de una línea */ }
 "/*" [^*] ~"*/" | "/*" "*"+ "/"  { /* Ignorar comentarios multilínea */ }
 
-// Directivas
-{Directiva}     { return agregarToken("DIRECTIVA", yytext()); }
-
-// Palabras Reservadas
-"AGENTE"        { return agregarToken("AGENTE", yytext()); }
-"contexto"      { return agregarToken("CONTEXTO", yytext()); }
-"variable"      { return agregarToken("VARIABLE", yytext()); }
-"EJECUTAR"      { return agregarToken("EJECUTAR", yytext()); }
-"EXPORTAR"      { return agregarToken("EXPORTAR", yytext()); }
-"CARGAR"        { return agregarToken("CARGAR", yytext()); }
-
-// Comandos de IA
-"PREGUNTAR" | "GENERAR" | "RESUMIR" | "ANALIZAR" | "TRADUCIR" | "CLASIFICAR" | "EXTRAER" 
-                { return agregarToken("COMANDO_IA", yytext()); }
-
-// Conectores
-"SOBRE" | "DESDE" | "EN" | "COMO" 
-                { return agregarToken("CONECTOR", yytext()); }
-
-// Símbolos
-"->"            { return agregarToken("FLECHA", yytext()); }
-"{"             { return agregarToken("LLAVE_A", yytext()); }
-"}"             { return agregarToken("LLAVE_C", yytext()); }
-"("             { return agregarToken("PAR_A", yytext()); }
-")"             { return agregarToken("PAR_C", yytext()); }
-"="             { return agregarToken("IGUAL", yytext()); }
-"+"             { return agregarToken("MAS", yytext()); }
-","             { return agregarToken("COMA", yytext()); }
+// Directivas (consultadas dinámicamente desde BibliotecaDeTokens)
+{Directiva}     { 
+    if (biblioteca.existeEnLosTokens(yytext())) {
+        return agregarToken(biblioteca.obtenerTerminal(yytext()), yytext());
+    }
+    return agregarToken("DIRECTIVA", yytext()); 
+}
 
 // Cadenas simples
 \"[^\"]*\"      { return agregarToken("CADENA", yytext()); }
 
-// Identificadores
-{Identificador} { return agregarToken("ID", yytext()); }
+// Palabras registradas / reservadas e Identificadores (consultadas desde BibliotecaDeTokens)
+{Identificador} { 
+    if (biblioteca.existeEnLosTokens(yytext())) {
+        return agregarToken(biblioteca.obtenerTerminal(yytext()), yytext());
+    } else {
+        return agregarToken("ID", yytext());
+    }
+}
+
+// Símbolos y operadores (consultados dinámicamente desde BibliotecaDeTokens)
+{SimboloCompuesto} | {SimboloSimple} {
+    if (biblioteca.existeEnLosTokens(yytext())) {
+        return agregarToken(biblioteca.obtenerTerminal(yytext()), yytext());
+    } else {
+        System.err.println("Error Léxico: '" + yytext() + "' en línea " + (yyline+1) + ", col " + (yycolumn+1)); 
+        erroresLexicos.add(new ErrorLexico(yytext(), "Carácter o símbolo no reconocido en el lenguaje Promptzal", yyline + 1, yycolumn + 1));
+        return agregarToken("ERROR_LEXICO", yytext());
+    }
+}
 
 // Números
 {Digito}+"."{Digito}+ { return agregarToken("NUMERO", yytext()); }
 {Digito}+             { return agregarToken("NUMERO", yytext()); }
 
-// Fin de archivo
-<<EOF>>         { return agregarToken("EOF", "EOF"); }
+// Fin de archivo — se registra el token EOF una sola vez y se retorna null
+<<EOF>>         { 
+    if (!eofRegistrado) {
+        eofRegistrado = true;
+        agregarToken("EOF", "EOF");
+    }
+    return null;
+}
 
-// Error léxico
+// Error léxico residual (cualquier otro caracter no capturado)
 .               { 
                     System.err.println("Error Léxico: '" + yytext() + "' en línea " + (yyline+1) + ", col " + (yycolumn+1)); 
-                    return null; 
+                    erroresLexicos.add(new ErrorLexico(yytext(), "Carácter no reconocido en el lenguaje Promptzal", yyline + 1, yycolumn + 1));
+                    return agregarToken("ERROR_LEXICO", yytext());
                 }

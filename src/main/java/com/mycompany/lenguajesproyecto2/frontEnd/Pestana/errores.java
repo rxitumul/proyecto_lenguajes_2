@@ -4,6 +4,8 @@
  */
 package com.mycompany.lenguajesproyecto2.frontEnd.Pestana;
 
+import java.util.List;
+
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -24,7 +26,20 @@ public class errores extends javax.swing.JPanel {
     }
 
     public void cargarErroresSintacticos(
-            java.util.List<com.mycompany.lenguajesproyecto2.BackEnd.AnalizadorSintactico.ErrorSintactico> lista) {
+            List<com.mycompany.lenguajesproyecto2.BackEnd.AnalizadorSintactico.ErrorSintactico> lista) {
+        cargarTodosLosErrores(null, lista);
+    }
+
+    public void cargarTodosLosErrores(
+            List<com.mycompany.lenguajesproyecto2.BackEnd.Reportes.ListasEnlazadas.ErrorLexico> erroresLexicos,
+            List<com.mycompany.lenguajesproyecto2.BackEnd.AnalizadorSintactico.ErrorSintactico> erroresSintacticos) {
+        cargarTodosLosErrores(erroresLexicos, erroresSintacticos, null);
+    }
+
+    public void cargarTodosLosErrores(
+            List<com.mycompany.lenguajesproyecto2.BackEnd.Reportes.ListasEnlazadas.ErrorLexico> erroresLexicos,
+            List<com.mycompany.lenguajesproyecto2.BackEnd.AnalizadorSintactico.ErrorSintactico> erroresSintacticos,
+            List<com.mycompany.lenguajesproyecto2.BackEnd.Semantico.ErrorSemantico> erroresSemanticos) {
         String[] columnas = { "#", "Tipo", "Fila", "Columna", "Token / Lexema", "Descripción" };
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
             @Override
@@ -33,9 +48,21 @@ public class errores extends javax.swing.JPanel {
             }
         };
 
-        if (lista != null) {
-            int contador = 1;
-            for (com.mycompany.lenguajesproyecto2.BackEnd.AnalizadorSintactico.ErrorSintactico err : lista) {
+        int contador = 1;
+        if (erroresLexicos != null) {
+            for (com.mycompany.lenguajesproyecto2.BackEnd.Reportes.ListasEnlazadas.ErrorLexico err : erroresLexicos) {
+                modelo.addRow(new Object[] {
+                        contador++,
+                        "Léxico",
+                        err.getFila(),
+                        err.getColumna(),
+                        err.getLexema(),
+                        err.getDescripcion()
+                });
+            }
+        }
+        if (erroresSintacticos != null) {
+            for (com.mycompany.lenguajesproyecto2.BackEnd.AnalizadorSintactico.ErrorSintactico err : erroresSintacticos) {
                 modelo.addRow(new Object[] {
                         contador++,
                         "Sintáctico",
@@ -43,6 +70,18 @@ public class errores extends javax.swing.JPanel {
                         err.getColumna(),
                         err.getTokenActual() != null ? err.getTokenActual().getDescripcion() : "EOF",
                         err.getMensaje()
+                });
+            }
+        }
+        if (erroresSemanticos != null) {
+            for (com.mycompany.lenguajesproyecto2.BackEnd.Semantico.ErrorSemantico err : erroresSemanticos) {
+                modelo.addRow(new Object[] {
+                        contador++,
+                        "Semántico",
+                        err.getFila(),
+                        err.getColumna(),
+                        err.getIdentificador(),
+                        err.getDescripcion()
                 });
             }
         }
@@ -66,6 +105,7 @@ public class errores extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -74,6 +114,10 @@ public class errores extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
+        jScrollPane1.setBackground(new java.awt.Color(29, 41, 81));
+
+        jTable1.setBackground(new java.awt.Color(29, 41, 81));
+        jTable1.setForeground(new java.awt.Color(255, 255, 255));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][] {
                         { null, null, null, null },

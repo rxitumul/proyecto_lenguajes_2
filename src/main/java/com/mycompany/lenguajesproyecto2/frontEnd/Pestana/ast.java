@@ -27,14 +27,18 @@ public class ast extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jLabel1 = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(29, 41, 81));
         setLayout(new java.awt.BorderLayout());
 
+        jScrollPane1.setBackground(new java.awt.Color(29, 41, 81));
+
+        jLabel1.setBackground(new java.awt.Color(29, 41, 81));
         jScrollPane1.setViewportView(jLabel1);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
