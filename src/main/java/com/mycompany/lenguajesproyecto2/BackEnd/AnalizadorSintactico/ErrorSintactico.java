@@ -38,6 +38,14 @@ public class ErrorSintactico {
         return tipoEsperado;
     }
 
+    public String getTokenEncontrado() {
+        return tokenActual != null ? tokenActual.getTipo() : "EOF";
+    }
+
+    public String getLexemaEncontrado() {
+        return tokenActual != null ? tokenActual.getDescripcion() : "";
+    }
+
     public String getMensaje() {
         return mensaje;
     }

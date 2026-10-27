@@ -20,6 +20,22 @@ public class ast extends javax.swing.JPanel {
     public void actualizarContenido() {
     }
 
+    public void cargarAST(com.mycompany.lenguajesproyecto2.BackEnd.Semantico.AST.NodoPrograma arbol) {
+        if (arbol == null) {
+            jLabel1.setText("<html><div style='padding:25px; color:#c9d1d9; font-family:sans-serif;'>"
+                    + "<h3>No hay árbol AST disponible</h3>"
+                    + "<p>Compile un código PromptZal válido para generar y visualizar el AST.</p></div></html>");
+            return;
+        }
+
+        String arbolTexto = com.mycompany.lenguajesproyecto2.BackEnd.Reportes.ReporteASTHtml.generarArbolTexto(arbol);
+        String htmlFormatted = "<html><body style='background-color:#0d1117; color:#7ee787; font-family:monospace; padding:20px; font-size:12px; white-space:pre;'>"
+                + "<div style='color:#58a6ff; font-weight:bold; font-size:14px; margin-bottom:12px;'>ÁRBOL DE SINTAXIS ABSTRACTA (AST)</div>"
+                + arbolTexto.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br/>")
+                + "</body></html>";
+        jLabel1.setText(htmlFormatted);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

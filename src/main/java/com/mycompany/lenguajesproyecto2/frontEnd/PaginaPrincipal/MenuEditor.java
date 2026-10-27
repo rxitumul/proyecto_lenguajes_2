@@ -32,6 +32,9 @@ import com.mycompany.lenguajesproyecto2.BackEnd.Reportes.RegistroDeTokens;
 import com.mycompany.lenguajesproyecto2.BackEnd.Reportes.ReporteDeError;
 import com.mycompany.lenguajesproyecto2.BackEnd.Reportes.ReporteHTMLTabla;
 import com.mycompany.lenguajesproyecto2.BackEnd.Reportes.ReportesHtml;
+import com.mycompany.lenguajesproyecto2.BackEnd.Reportes.ReporteErroresHtml;
+import com.mycompany.lenguajesproyecto2.BackEnd.Reportes.ReporteTablaSimbolosHtml;
+import com.mycompany.lenguajesproyecto2.BackEnd.Reportes.ReporteASTHtml;
 import com.mycompany.lenguajesproyecto2.BackEnd.Reportes.ListasEnlazadas.ErrorLexico;
 import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.AnalizadorSemantico;
 import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.BibliotecaGeneradorPromptZal;
@@ -83,7 +86,7 @@ public class MenuEditor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jSplitPane7 = new javax.swing.JSplitPane();
@@ -105,6 +108,7 @@ public class MenuEditor extends javax.swing.JFrame {
         promptzal = new javax.swing.JButton();
         errores = new javax.swing.JButton();
         ast = new javax.swing.JButton();
+        terminal = new javax.swing.JButton();
         jbInferiores = new javax.swing.JPanel();
         cargarArchivo = new javax.swing.JButton();
         crearArchivo = new javax.swing.JButton();
@@ -167,8 +171,8 @@ public class MenuEditor extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
 
                 if (evt.getClickCount() == 1) {
-                    DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) jtreeCarpetas
-                            .getLastSelectedPathComponent();
+                    DefaultMutableTreeNode nodoSeleccionado =
+                    (DefaultMutableTreeNode) jtreeCarpetas.getLastSelectedPathComponent();
 
                     if (nodoSeleccionado != null && nodoSeleccionado.isLeaf()) {
                         Object userObject = nodoSeleccionado.getUserObject();
@@ -214,27 +218,36 @@ public class MenuEditor extends javax.swing.JFrame {
         ast.setContentAreaFilled(false);
         ast.addActionListener(this::astActionPerformed);
 
+        terminal.setForeground(new java.awt.Color(255, 255, 255));
+        terminal.setText("Terminal");
+        terminal.setBorderPainted(false);
+        terminal.setContentAreaFilled(false);
+
         javax.swing.GroupLayout jbSuperioresLayout = new javax.swing.GroupLayout(jbSuperiores);
         jbSuperiores.setLayout(jbSuperioresLayout);
         jbSuperioresLayout.setHorizontalGroup(
-                jbSuperioresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jbSuperioresLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(promptzal)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(errores)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(ast)
-                                .addContainerGap(257, Short.MAX_VALUE)));
+            jbSuperioresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jbSuperioresLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(promptzal)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(errores)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ast)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(terminal)
+                .addContainerGap(172, Short.MAX_VALUE))
+        );
         jbSuperioresLayout.setVerticalGroup(
-                jbSuperioresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jbSuperioresLayout.createSequentialGroup()
-                                .addGroup(jbSuperioresLayout
-                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(promptzal)
-                                        .addComponent(errores)
-                                        .addComponent(ast))
-                                .addGap(0, 0, Short.MAX_VALUE)));
+            jbSuperioresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jbSuperioresLayout.createSequentialGroup()
+                .addGroup(jbSuperioresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(promptzal)
+                    .addComponent(errores)
+                    .addComponent(ast)
+                    .addComponent(terminal))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
         jSplitPane9.setTopComponent(jbSuperiores);
 
@@ -273,30 +286,31 @@ public class MenuEditor extends javax.swing.JFrame {
         javax.swing.GroupLayout jbInferioresLayout = new javax.swing.GroupLayout(jbInferiores);
         jbInferiores.setLayout(jbInferioresLayout);
         jbInferioresLayout.setHorizontalGroup(
-                jbInferioresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jbInferioresLayout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(crearArchivo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cargarArchivo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(guardar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(copilar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(reportesHtml)
-                                .addContainerGap(15, Short.MAX_VALUE)));
+            jbInferioresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jbInferioresLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(crearArchivo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cargarArchivo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(guardar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(copilar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(reportesHtml)
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
         jbInferioresLayout.setVerticalGroup(
-                jbInferioresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jbInferioresLayout.createSequentialGroup()
-                                .addGroup(jbInferioresLayout
-                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(cargarArchivo)
-                                        .addComponent(crearArchivo)
-                                        .addComponent(guardar)
-                                        .addComponent(copilar)
-                                        .addComponent(reportesHtml))
-                                .addGap(0, 0, Short.MAX_VALUE)));
+            jbInferioresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jbInferioresLayout.createSequentialGroup()
+                .addGroup(jbInferioresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cargarArchivo)
+                    .addComponent(crearArchivo)
+                    .addComponent(guardar)
+                    .addComponent(copilar)
+                    .addComponent(reportesHtml))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
         jSplitPane9.setRightComponent(jbInferiores);
 
@@ -378,6 +392,10 @@ public class MenuEditor extends javax.swing.JFrame {
             if (!erroresLexicos.isEmpty()) {
                 mostrarPestanaErrores(erroresLexicos, Collections.emptyList(), Collections.emptyList());
 
+                // Generar reporte HTML de errores
+                new ReporteErroresHtml().crearReporte("reportes/reporte_errores.html",
+                        erroresLexicos, Collections.emptyList(), Collections.emptyList());
+
                 StringBuilder sb = new StringBuilder();
                 sb.append("====================================================\n");
                 sb.append("   ERRORES LÉXICOS DETECTADOS (").append(erroresLexicos.size()).append(")\n");
@@ -397,6 +415,10 @@ public class MenuEditor extends javax.swing.JFrame {
             if (ast == null || parser.tieneErrores()) {
                 List<ErrorSintactico> listaErrores = parser.getErrores();
                 mostrarPestanaErrores(Collections.emptyList(), listaErrores, Collections.emptyList());
+
+                // Generar reporte HTML de errores
+                new ReporteErroresHtml().crearReporte("reportes/reporte_errores.html",
+                        erroresLexicos, listaErrores, Collections.emptyList());
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("====================================================\n");
@@ -419,6 +441,10 @@ public class MenuEditor extends javax.swing.JFrame {
                 List<ErrorSemantico> erroresSem = semantico.getErrores();
                 mostrarPestanaErrores(Collections.emptyList(), Collections.emptyList(), erroresSem);
 
+                // Generar reporte HTML de errores
+                new ReporteErroresHtml().crearReporte("reportes/reporte_errores.html",
+                        erroresLexicos, Collections.emptyList(), erroresSem);
+
                 StringBuilder sb = new StringBuilder();
                 sb.append("====================================================\n");
                 sb.append("   ERRORES SEMÁNTICOS DETECTADOS (").append(erroresSem.size()).append(")\n");
@@ -439,8 +465,22 @@ public class MenuEditor extends javax.swing.JFrame {
                     ast, semantico.getTablaDeSimbolos(), semantico.getAgentesEjecutados());
             mostrarPestanaPromptzal(promptFinal);
 
+            // Guardar prompt generado en archivo físico
+            BibliotecaGeneradorPromptZal.guardarPromptEnArchivo("salidas/prompt_final.txt", promptFinal);
+
+            // Generar los 3 reportes obligatorios del sistema
+            new ReporteErroresHtml().crearReporte("reportes/reporte_errores.html",
+                    Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
+            new ReporteTablaSimbolosHtml().crearReporte("reportes/tabla_simbolos.html",
+                    semantico.getTablaDeSimbolos());
+            new ReporteASTHtml().crearReporte("reportes/ast.html", ast);
+            ReporteASTHtml.guardarDotEnArchivo("reportes/ast.dot", ast);
+
+            // Actualizar pestaña visual del AST en el IDE
+            mostrarPestanaAST(ast);
+
             Configuraciones.mensajeSi("Compilación Exitosa",
-                    "¡Código validado léxica, sintáctica y semánticamente con éxito!\nPromptZal generado correctamente.");
+                    "¡Código validado léxica, sintáctica y semánticamente con éxito!\nPromptZal generado y reportes exportados correctamente.");
         } catch (Exception e) {
             Configuraciones.pantallaDeError("Error", "Error durante el análisis: " + e.getMessage());
             e.printStackTrace();
@@ -508,47 +548,47 @@ public class MenuEditor extends javax.swing.JFrame {
             }
             reporteTabla.creadorDeArchivos("reportes/tokens.html", reporteTabla.generarHTMLDeTokens());
 
-            // 2. Reporte HTML de Errores Léxicos
-            ReporteDeError reporteErrores = new ReporteDeError();
-            for (ErrorLexico err : erroresLexicos) {
-                reporteErrores.registrarError(err);
-            }
-            reporteErrores.creadorDeArchivos("reportes/errores_lexicos.html", reporteErrores.generarHTMLDeError());
+            // 4. Reporte Consolidado de Errores (Léxicos, Sintácticos y Semánticos)
+            PromptzalParser parser = new PromptzalParser(tokens);
+            NodoPrograma ast = parser.parsearAST();
+            List<ErrorSintactico> erroresSintacticos = parser.getErrores();
 
-            // 3. Reporte Estadístico
-            BibliotecaDeReporteDeUsoDeTokensHtml reporteEst = new BibliotecaDeReporteDeUsoDeTokensHtml();
-            for (TokenEntidad tok : tokens) {
-                String cat = biblioteca.mapeadorDeTokens(tok.getDescripcion());
-                switch (cat) {
-                    case "DIRECTIVA":
-                        reporteEst.setDirectivas(reporteEst.getDirectivas() + 1);
-                        break;
-                    case "PALABRA_RESERVADA":
-                        reporteEst.setReservadas(reporteEst.getReservadas() + 1);
-                        break;
-                    case "COMANDO_IA":
-                        reporteEst.setComandoIA(reporteEst.getComandoIA() + 1);
-                        break;
-                    case "FUNCION_DE_SISTEMA":
-                        reporteEst.setFuncionSistema(reporteEst.getFuncionSistema() + 1);
-                        break;
-                    case "CONECTORES":
-                        reporteEst.setConectores(reporteEst.getConectores() + 1);
-                        break;
-                    default:
-                        if ("ID".equals(tok.getTipo())) {
-                            reporteEst.setIdentificadores(reporteEst.getIdentificadores() + 1);
-                        }
-                        break;
-                }
+            List<ErrorSemantico> erroresSemanticos = Collections.emptyList();
+            AnalizadorSemantico semantico = new AnalizadorSemantico();
+            if (ast != null && !parser.tieneErrores()) {
+                semantico.analizar(ast);
+                erroresSemanticos = semantico.getErrores();
             }
-            reporteEst.setErrores(erroresLexicos.size());
-            ReportesHtml creador = new ReportesHtml();
-            creador.creadorDeArchivos("reportes/estadisticas.html", reporteEst.generarReporteEstadistico());
+
+            ReporteErroresHtml repErroresComp = new ReporteErroresHtml();
+            repErroresComp.crearReporte("reportes/reporte_errores.html",
+                    erroresLexicos, erroresSintacticos, erroresSemanticos);
+
+            // 5. Reporte de Tabla de Símbolos
+            ReporteTablaSimbolosHtml repTablaSim = new ReporteTablaSimbolosHtml();
+            repTablaSim.crearReporte("reportes/tabla_simbolos.html", semantico.getTablaDeSimbolos());
+
+            // 6. Reporte del AST
+            if (ast != null) {
+                ReporteASTHtml repAst = new ReporteASTHtml();
+                repAst.crearReporte("reportes/ast.html", ast);
+                ReporteASTHtml.guardarDotEnArchivo("reportes/ast.dot", ast);
+                mostrarPestanaAST(ast);
+            }
+
+            // 7. Salida Prompt final si no hubo errores
+            if (ast != null && erroresLexicos.isEmpty() && erroresSintacticos.isEmpty() && erroresSemanticos.isEmpty()) {
+                String promptTxt = BibliotecaGeneradorPromptZal.generarPromptFinal(
+                        ast, semantico.getTablaDeSimbolos(), semantico.getAgentesEjecutados());
+                BibliotecaGeneradorPromptZal.guardarPromptEnArchivo("salidas/prompt_final.txt", promptTxt);
+            }
 
             Configuraciones.mensajeSi("Reportes Generados",
-                    "Se generaron exitosamente los reportes HTML en la carpeta 'reportes':\n"
-                            + "• tokens.html\n• errores_lexicos.html\n• estadisticas.html");
+                    "Se generaron exitosamente los reportes obligatorios en la carpeta 'reportes':\n"
+                            + "• reporte_errores.html (Léxicos, Sintácticos y Semánticos)\n"
+                            + "• tabla_simbolos.html (Agentes, Variables, Ámbitos)\n"
+                            + "• ast.html / ast.dot (Representación del AST)\n"
+                            + "• tokens.html y estadisticas.html");
 
         } catch (Exception e) {
             Configuraciones.pantallaDeError("Error", "Error al generar reportes: " + e.getMessage());
@@ -622,6 +662,10 @@ public class MenuEditor extends javax.swing.JFrame {
     }
 
     private void astActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_astActionPerformed
+        mostrarPestanaAST(null);
+    }// GEN-LAST:event_astActionPerformed
+
+    public void mostrarPestanaAST(NodoPrograma arbol) {
         int indexExistente = -1;
         for (int i = 0; i < jTabbleDeOpciones.getTabCount(); i++) {
             if (jTabbleDeOpciones.getTitleAt(i).trim().equals("AST")) {
@@ -631,22 +675,22 @@ public class MenuEditor extends javax.swing.JFrame {
         }
 
         if (indexExistente != -1) {
-
             ast panelActual = (ast) jTabbleDeOpciones.getComponentAt(indexExistente);
-            panelActual.actualizarContenido();
+            if (arbol != null) {
+                panelActual.cargarAST(arbol);
+            }
             jTabbleDeOpciones.setSelectedIndex(indexExistente);
         } else {
-
             if (astPanel == null) {
                 astPanel = new ast();
-            } else {
-                astPanel.actualizarContenido();
             }
-
+            if (arbol != null) {
+                astPanel.cargarAST(arbol);
+            }
             jTabbleDeOpciones.addTab("AST", astPanel);
             jTabbleDeOpciones.setSelectedIndex(jTabbleDeOpciones.getTabCount() - 1);
         }
-    }// GEN-LAST:event_astActionPerformed
+    }
 
     /**
      * @param args the command line arguments
@@ -706,6 +750,7 @@ public class MenuEditor extends javax.swing.JFrame {
     private javax.swing.JLabel nombreArchivo;
     private javax.swing.JButton promptzal;
     private javax.swing.JButton reportesHtml;
+    private javax.swing.JButton terminal;
     // End of variables declaration//GEN-END:variables
 
     private void escritorDePz(String phat) {

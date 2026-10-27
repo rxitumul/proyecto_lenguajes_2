@@ -138,8 +138,12 @@ public class AnalizadorSemantico {
 
             // B) Comandos de IA dentro del agente
             for (NodoComando cmd : agente.getComandos()) {
-                // Validar identificadores en la expresión principal del comando
-                validarIdentificadoresEnExpresion(cmd.getExpresion(), ambitoLocal);
+                String tipoCmd = cmd.getTipoComando() != null ? cmd.getTipoComando().trim().toUpperCase() : "";
+
+                // Excepción semántica obligatoria: los argumentos directos de GENERAR no deben ser validados como variables
+                if (!"GENERAR".equals(tipoCmd)) {
+                    validarIdentificadoresEnExpresion(cmd.getExpresion(), ambitoLocal);
+                }
 
                 // Validar identificadores en cada cláusula conectora (ej. SOBRE entrada, COMO "json")
                 for (NodoConector conector : cmd.getConectores()) {

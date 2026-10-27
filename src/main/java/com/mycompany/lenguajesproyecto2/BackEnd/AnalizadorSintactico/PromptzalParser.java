@@ -222,8 +222,11 @@ public class PromptzalParser {
             return new NodoAgente(tokId.getDescripcion(), contextoStr, listaVariables,
                     listaComandos, tokAgente.getFila(), tokAgente.getColumna());
         } catch (ErrorSintacticoException e) {
-            // Modo pánico para agente: descartar hasta encontrar el siguiente AGENTE, EJECUTAR, EXPORTAR o EOF
-            sincronizar(Set.of(Terminal.AGENTE, Terminal.EJECUTAR, Terminal.EXPORTAR, Terminal.EOF));
+            // Modo pánico para agente: descartar hasta encontrar LLAVE_C, siguiente AGENTE, EJECUTAR, EXPORTAR o EOF
+            sincronizar(Set.of(Terminal.LLAVE_C, Terminal.AGENTE, Terminal.EJECUTAR, Terminal.EXPORTAR, Terminal.EOF));
+            if (comprobar(Terminal.LLAVE_C)) {
+                indice++; // Consumir la llave de cierre para salir limpiamente del agente defectuoso
+            }
             return null;
         }
     }

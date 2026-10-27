@@ -11,6 +11,9 @@ import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.AST.NodoVariable;
 import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.TablaSimbolos.Simbolo;
 import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.TablaSimbolos.TablaDeSimbolos;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -221,6 +224,30 @@ public final class BibliotecaGeneradorPromptZal {
                 sb.append(" Guarda el análisis como ").append(y).append(".");
                 break;
 
+            case "CLASIFICAR":
+                if (fuente != null) {
+                    sb.append("Basándote en ").append(fuente).append(", clasifica: ").append(p).append(".");
+                } else {
+                    sb.append("Clasifica el siguiente contenido: ").append(p).append(".");
+                }
+                if (formato != null) {
+                    sb.append(" dentro de las categorías o formato ").append(formato).append(".");
+                }
+                sb.append(" Guarda la clasificación como ").append(y).append(".");
+                break;
+
+            case "EXTRAER":
+                if (fuente != null) {
+                    sb.append("Basándote en ").append(fuente).append(", extrae la información correspondiente a: ").append(p).append(".");
+                } else {
+                    sb.append("Extrae la siguiente información: ").append(p).append(".");
+                }
+                if (formato != null) {
+                    sb.append(" en formato ").append(formato).append(".");
+                }
+                sb.append(" Guarda los datos extraídos como ").append(y).append(".");
+                break;
+
             default:
                 if (fuente != null) {
                     sb.append("Basándote en ").append(fuente).append(", ejecuta la instrucción ").append(tipo).append(": ").append(p).append(".");
@@ -384,5 +411,54 @@ public final class BibliotecaGeneradorPromptZal {
         }
 
         return sb.toString();
+    }
+
+    // =========================================================================
+    // SALIDA Y EXPORTACIÓN A ARCHIVO EN DISCO
+    // =========================================================================
+
+    /**
+     * Guarda el contenido del prompt final generado en un archivo físico en disco.
+     * Crea directorios padres si no existen.
+     *
+     * @param rutaArchivo Ruta completa relativa o absoluta del archivo destino.
+     * @param contenidoPrompt Texto completo del prompt a guardar.
+     * @return true si la escritura fue exitosa, false en caso de error de E/S.
+     */
+    public static boolean guardarPromptEnArchivo(String rutaArchivo, String contenidoPrompt) {
+        if (rutaArchivo == null || contenidoPrompt == null) {
+            return false;
+        }
+        try {
+            File archivo = new File(rutaArchivo);
+            if (archivo.getParentFile() != null) {
+                archivo.getParentFile().mkdirs();
+            }
+            try (FileWriter writer = new FileWriter(archivo)) {
+                writer.write(contenidoPrompt);
+            }
+            return true;
+        } catch (IOException e) {
+            System.err.println("Error al guardar archivo de PromptZal: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Genera el prompt final a partir del AST y lo guarda automáticamente en el archivo indicado.
+     *
+     * @param programa AST del programa analizado.
+     * @param tabla Tabla de símbolos.
+     * @param agentesEjecutados Conjunto de nombres de agentes ejecutados.
+     * @param rutaArchivo Ruta del archivo de destino.
+     * @return Texto del prompt generado.
+     */
+    public static String generarYGuardarPrompt(NodoPrograma programa, TablaDeSimbolos tabla,
+                                               Set<String> agentesEjecutados, String rutaArchivo) {
+        String promptTexto = generarPromptFinal(programa, tabla, agentesEjecutados);
+        if (rutaArchivo != null && !rutaArchivo.trim().isEmpty()) {
+            guardarPromptEnArchivo(rutaArchivo, promptTexto);
+        }
+        return promptTexto;
     }
 }
