@@ -29,6 +29,7 @@ public class ReporteErroresHtml extends ReportesHtml {
         html.append("  <meta charset=\"UTF-8\">\n");
         html.append("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n");
         html.append("  <title>PromptZal - Reporte de Errores de Compilación</title>\n");
+        html.append("  <script src=\"https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js\"></script>\n");
         html.append("  <style>\n");
         html.append("    :root {\n");
         html.append("      --bg-dark: #0d1117;\n");
@@ -159,6 +160,26 @@ public class ReporteErroresHtml extends ReportesHtml {
         html.append("      color: var(--text-muted);\n");
         html.append("      text-align: right;\n");
         html.append("    }\n");
+        html.append("    .charts-row {\n");
+        html.append("      display: grid;\n");
+        html.append("      grid-template-columns: 1fr 1fr;\n");
+        html.append("      gap: 20px;\n");
+        html.append("      margin: 25px 0;\n");
+        html.append("    }\n");
+        html.append("    .chart-card {\n");
+        html.append("      background: #0d1117;\n");
+        html.append("      border: 1px solid var(--border-color);\n");
+        html.append("      border-radius: 10px;\n");
+        html.append("      padding: 20px;\n");
+        html.append("    }\n");
+        html.append("    .chart-card h3 {\n");
+        html.append("      margin: 0 0 16px 0;\n");
+        html.append("      font-size: 13px;\n");
+        html.append("      text-transform: uppercase;\n");
+        html.append("      letter-spacing: 0.5px;\n");
+        html.append("      color: var(--text-muted);\n");
+        html.append("    }\n");
+        html.append("    .chart-wrapper { position: relative; height: 220px; }\n");
         html.append("  </style>\n");
         html.append("</head>\n<body>\n");
         html.append("<div class=\"container\">\n");
@@ -173,6 +194,22 @@ public class ReporteErroresHtml extends ReportesHtml {
         html.append("    <div class=\"stat-card stat-lex\"><div class=\"val\">").append(cantLexicos).append("</div><div class=\"lbl\">Errores Léxicos</div></div>\n");
         html.append("    <div class=\"stat-card stat-sin\"><div class=\"val\">").append(cantSintacticos).append("</div><div class=\"lbl\">Errores Sintácticos</div></div>\n");
         html.append("    <div class=\"stat-card stat-sem\"><div class=\"val\">").append(cantSemanticos).append("</div><div class=\"lbl\">Errores Semánticos</div></div>\n");
+        html.append("  </div>\n");
+
+        // ── GRÁFICAS ──────────────────────────────────────────────────────────
+        html.append("  <div class=\"charts-row\">\n");
+
+        // Dona: distribución por tipo
+        html.append("    <div class=\"chart-card\">\n");
+        html.append("      <h3>Distribución de errores por tipo</h3>\n");
+        html.append("      <div class=\"chart-wrapper\"><canvas id=\"chartDona\"></canvas></div>\n");
+        html.append("    </div>\n");
+
+        // Barras horizontales: cantidad por fase
+        html.append("    <div class=\"chart-card\">\n");
+        html.append("      <h3>Errores por fase de análisis</h3>\n");
+        html.append("      <div class=\"chart-wrapper\"><canvas id=\"chartBarras\"></canvas></div>\n");
+        html.append("    </div>\n");
         html.append("  </div>\n");
 
         if (totalErrores == 0) {
@@ -260,6 +297,67 @@ public class ReporteErroresHtml extends ReportesHtml {
             .append("\n");
         html.append("  </div>\n");
         html.append("</div>\n");
+
+        // ── SCRIPTS CHART.JS ─────────────────────────────────────────────────
+        html.append("<script>\n");
+        html.append("(function() {\n");
+        html.append("  const cL = " + cantLexicos + ";\n");
+        html.append("  const cS = " + cantSintacticos + ";\n");
+        html.append("  const cSem = " + cantSemanticos + ";\n");
+        html.append("  const total = cL + cS + cSem;\n");
+        html.append("  const chartDefaults = { color: '#c9d1d9' };\n");
+        html.append("  Chart.defaults.color = '#8b949e';\n");
+        html.append("  Chart.defaults.borderColor = '#30363d';\n");
+
+        // Dona
+        html.append("  new Chart(document.getElementById('chartDona'), {\n");
+        html.append("    type: 'doughnut',\n");
+        html.append("    data: {\n");
+        html.append("      labels: ['Léxicos', 'Sintácticos', 'Semánticos'],\n");
+        html.append("      datasets: [{\n");
+        html.append("        data: [cL, cS, cSem],\n");
+        html.append("        backgroundColor: ['rgba(210,153,34,0.8)','rgba(188,140,255,0.8)','rgba(240,136,62,0.8)'],\n");
+        html.append("        borderColor: ['#d29922','#bc8cff','#f0883e'],\n");
+        html.append("        borderWidth: 2,\n");
+        html.append("        hoverOffset: 8\n");
+        html.append("      }]\n");
+        html.append("    },\n");
+        html.append("    options: {\n");
+        html.append("      responsive: true, maintainAspectRatio: false,\n");
+        html.append("      plugins: {\n");
+        html.append("        legend: { position: 'bottom', labels: { color: '#c9d1d9', padding: 14, font: { size: 12 } } },\n");
+        html.append("        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} (${total > 0 ? Math.round(ctx.raw*100/total) : 0}%)` } }\n");
+        html.append("      }\n");
+        html.append("    }\n");
+        html.append("  });\n");
+
+        // Barras horizontales
+        html.append("  new Chart(document.getElementById('chartBarras'), {\n");
+        html.append("    type: 'bar',\n");
+        html.append("    data: {\n");
+        html.append("      labels: ['Léxicos', 'Sintácticos', 'Semánticos'],\n");
+        html.append("      datasets: [{\n");
+        html.append("        label: 'Cantidad de errores',\n");
+        html.append("        data: [cL, cS, cSem],\n");
+        html.append("        backgroundColor: ['rgba(210,153,34,0.5)','rgba(188,140,255,0.5)','rgba(240,136,62,0.5)'],\n");
+        html.append("        borderColor: ['#d29922','#bc8cff','#f0883e'],\n");
+        html.append("        borderWidth: 2,\n");
+        html.append("        borderRadius: 6\n");
+        html.append("      }]\n");
+        html.append("    },\n");
+        html.append("    options: {\n");
+        html.append("      indexAxis: 'y',\n");
+        html.append("      responsive: true, maintainAspectRatio: false,\n");
+        html.append("      plugins: { legend: { display: false } },\n");
+        html.append("      scales: {\n");
+        html.append("        x: { beginAtZero: true, ticks: { precision: 0, color: '#8b949e' }, grid: { color: '#21262d' } },\n");
+        html.append("        y: { ticks: { color: '#c9d1d9', font: { size: 13 } }, grid: { color: '#21262d' } }\n");
+        html.append("      }\n");
+        html.append("    }\n");
+        html.append("  });\n");
+
+        html.append("})();\n");
+        html.append("</script>\n");
         html.append("</body>\n</html>");
 
         return html;

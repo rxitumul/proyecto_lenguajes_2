@@ -139,13 +139,17 @@ public class PintorDeTokensTest {
     }
 
     @Test
-    @DisplayName("MenuEditor se inicializa correctamente con JTextPane sin errores de tipo")
+    @DisplayName("MenuEditor se inicializa correctamente y soporta las pestañas Terminal y Lenguaje Promptzal")
     public void testMenuEditorInicializacion() {
         assertDoesNotThrow(() -> {
             com.mycompany.lenguajesproyecto2.frontEnd.PaginaPrincipal.MenuEditor editor =
                 new com.mycompany.lenguajesproyecto2.frontEnd.PaginaPrincipal.MenuEditor();
             assertNotNull(editor);
             assertNotNull(editor.getContentPane());
+
+            // Apertura de pestaña Terminal y escritura de mensajes
+            editor.mostrarPestanaTerminal("Mensaje de prueba en la Terminal");
+            editor.mostrarPestanaPromptzal("# Prompt generado con PromptZal");
         });
     }
 }

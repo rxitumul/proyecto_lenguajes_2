@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8">
+<title>Reporte de Tokens</title>
+<style>
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d1117; color: #c9d1d9; margin: 0; padding: 30px; }
+  .container { max-width: 1100px; margin: auto; background: #161b22; padding: 25px; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); border: 1px solid #30363d; }
+  h1 { color: #58a6ff; border-bottom: 2px solid #30363d; padding-bottom: 10px; margin-top: 0; font-size: 24px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
+  th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #30363d; }
+  th { background-color: #1f6feb; color: #ffffff; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
+  td { color: #b1bac4; }
+  tr:hover { background-color: #21262d; }
+  .no-data { padding: 20px; background-color: #0f2b1d; color: #3fb950; border-left: 4px solid #2ea043; border-radius: 4px; font-weight: 500; margin-top: 20px; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Reporte de Tokens</h1>
+<table>
+<tr><th>#</th><th>Lexema / Carácter</th><th>Tipo</th><th>Descripción</th><th>Fila</th><th>Columna</th></tr>
+<tr><td>1</td><td>@modelo</td><td>DIRECTIVA</td><td>Indica la herramienta o modelo de IA (ej. 'claude-3-5', 'gpt-4').</td><td>1</td><td>1</td></tr>
+<tr><td>2</td><td>"gpt-4o"</td><td>CADENA</td><td>Token no reconocido</td><td>1</td><td>9</td></tr>
+<tr><td>3</td><td>@rol</td><td>DIRECTIVA</td><td>Define el rol general que asumirá la IA en el encabezado del prompt.</td><td>2</td><td>1</td></tr>
+<tr><td>4</td><td>"traductor profesional"</td><td>CADENA</td><td>Token no reconocido</td><td>2</td><td>6</td></tr>
+<tr><td>5</td><td>@formato</td><td>DIRECTIVA</td><td>Indica el formato de salida deseado (ej. 'json', 'markdown', 'lista').</td><td>3</td><td>1</td></tr>
+<tr><td>6</td><td>"texto plano"</td><td>CADENA</td><td>Token no reconocido</td><td>3</td><td>10</td></tr>
+<tr><td>7</td><td>AGENTE</td><td>PALABRA_RESERVADA</td><td>Declara un agente: la unidad que agrupa contexto, variables y comandos.</td><td>6</td><td>1</td></tr>
+<tr><td>8</td><td>traductor</td><td>ID</td><td>Token no reconocido</td><td>6</td><td>8</td></tr>
+<tr><td>9</td><td>{</td><td>OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</td><td>Llave de apertura de bloque.</td><td>6</td><td>18</td></tr>
+<tr><td>10</td><td>contexto</td><td>PALABRA_RESERVADA</td><td>Define el rol que asumirá la IA dentro del agente.</td><td>7</td><td>1</td></tr>
+<tr><td>11</td><td>=</td><td>OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</td><td>Operador de asignación.</td><td>7</td><td>10</td></tr>
+<tr><td>12</td><td>"Eres un traductor experto de inglés a español"</td><td>CADENA</td><td>Token no reconocido</td><td>7</td><td>12</td></tr>
+<tr><td>13</td><td>variable</td><td>PALABRA_RESERVADA</td><td>Declara una variable que almacena un valor o el resultado de un comando.</td><td>8</td><td>1</td></tr>
+<tr><td>14</td><td>textoOriginal</td><td>ID</td><td>Token no reconocido</td><td>8</td><td>10</td></tr>
+<tr><td>15</td><td>=</td><td>OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</td><td>Operador de asignación.</td><td>8</td><td>24</td></tr>
+<tr><td>16</td><td>"Hello, welcome to our application."</td><td>CADENA</td><td>Token no reconocido</td><td>8</td><td>26</td></tr>
+<tr><td>17</td><td>TRADUCIR</td><td>COMANDO_IA</td><td>Traduce un contenido a otro idioma o formato.</td><td>9</td><td>1</td></tr>
+<tr><td>18</td><td>textoOriginal</td><td>ID</td><td>Token no reconocido</td><td>9</td><td>10</td></tr>
+<tr><td>19</td><td>COMO</td><td>CONECTORES</td><td>Indica el formato o rol de salida deseado.</td><td>9</td><td>24</td></tr>
+<tr><td>20</td><td>"español neutro"</td><td>CADENA</td><td>Token no reconocido</td><td>9</td><td>29</td></tr>
+<tr><td>21</td><td>-></td><td>CONECTORES</td><td>Asigna el resultado del comando a una variable.</td><td>9</td><td>46</td></tr>
+<tr><td>22</td><td>textoTraducido</td><td>ID</td><td>Token no reconocido</td><td>9</td><td>49</td></tr>
+<tr><td>23</td><td>}</td><td>OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</td><td>Llave de cierre de bloque.</td><td>10</td><td>1</td></tr>
+<tr><td>24</td><td>EJECUTAR</td><td>PALABRA_RESERVADA</td><td>Corre un agente previamente definido.</td><td>12</td><td>1</td></tr>
+<tr><td>25</td><td>traductor</td><td>ID</td><td>Token no reconocido</td><td>12</td><td>10</td></tr>
+<tr><td>26</td><td>EXPORTAR</td><td>PALABRA_RESERVADA</td><td>Indica qué resultados se incluyen en el prompt final.</td><td>13</td><td>1</td></tr>
+<tr><td>27</td><td>textoTraducido</td><td>ID</td><td>Token no reconocido</td><td>13</td><td>10</td></tr>
+</table>
+</body>
+</html></div>
+</body>
+</html>

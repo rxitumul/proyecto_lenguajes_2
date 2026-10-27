@@ -1,30 +1,17 @@
-======================================================================
-                  PROMPTZAL - ESPECIFICACIÓN DEL PROMPT FINAL
-======================================================================
+# Prompt generado con PromptZal
+Modelo destino: claude-sonnet-4-6
+Rol general: analista de datos
+Formato de respuesta: markdown
 
-[ENCABEZADO GENERAL - DIRECTIVAS DECLARADAS]
-  • @modelo            : "claude-sonnet-4-6"    // Especifica el modelo base de Inteligencia Artificial (ej. 'gpt-4', 'claude-3-5').
-  • @rol               : "analista de datos"    // Define el rol o comportamiento global predeterminado de la IA.
-  • @formato           : "markdown"             // Especifica el formato estructural de salida de las respuestas.
+## Agente: analista
+Contexto: Eres un analista de datos experto
 
-----------------------------------------------------------------------
-[LISTADO DE AGENTES SEGÚN INSTRUCCIONES 'EJECUTAR']
-----------------------------------------------------------------------
+Variables disponibles:
+- ventas: contenido del archivo "ventas.csv" (adjuntar el archivo)
 
-1. AGENTE: analista
-   • Contexto: "Eres un analista de datos experto"
-   • Variables locales:
-       * ventas = CARGAR("ventas.csv")
-   • Instrucciones en lenguaje natural:
-       Paso 1: Basándote en ventas, responde: "Cuales son las 3 tendencias principales?". Guarda la respuesta como tendencias.
-       Paso 2: Resume tendencias en un máximo de 100 palabras. Guarda el resultado como resumen.
+Instrucciones:
+1. Basandote en ventas, responde: Cuales son las 3 tendencias principales? Guarda la respuesta como tendencias.
+2. Resume tendencias en un maximo de 100 palabras. Guarda el resultado como resumen.
 
-----------------------------------------------------------------------
-[RESULTADOS SOLICITADOS POR 'EXPORTAR']
-----------------------------------------------------------------------
-Al finalizar la ejecución, devuelve y consolida los siguientes resultados:
-  • resumen            (fuente: Agente 'analista')
-
-======================================================================
-                     FIN DEL DOCUMENTO PROMPTZAL
-======================================================================
+## Resultado solicitado
+- resumen

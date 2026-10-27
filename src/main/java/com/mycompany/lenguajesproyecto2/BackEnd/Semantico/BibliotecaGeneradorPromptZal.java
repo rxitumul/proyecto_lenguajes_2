@@ -6,7 +6,9 @@ import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.AST.NodoConector;
 import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.AST.NodoDirectiva;
 import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.AST.NodoEjecucion;
 import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.AST.NodoExportar;
+import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.AST.NodoExpresion;
 import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.AST.NodoPrograma;
+import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.AST.NodoTermino;
 import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.AST.NodoVariable;
 import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.TablaSimbolos.Simbolo;
 import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.TablaSimbolos.TablaDeSimbolos;
@@ -100,10 +102,22 @@ public final class BibliotecaGeneradorPromptZal {
     // =========================================================================
 
     /**
+     * Limpia comillas circundantes de un texto si existen.
+     */
+    public static String limpiarCadena(String texto) {
+        if (texto == null) return "";
+        String trimmed = texto.trim();
+        if (trimmed.startsWith("\"") && trimmed.endsWith("\"") && trimmed.length() >= 2) {
+            return trimmed.substring(1, trimmed.length() - 1);
+        }
+        return trimmed;
+    }
+
+    /**
      * Traduce un comando de PromptZal a una instrucción exacta en Lenguaje Natural
-     * según los requerimientos de la rúbrica.
+     * según los requerimientos de la especificación del PDF (página 8).
      * Ejemplo: PREGUNTAR p SOBRE x -> y se traduce a:
-     * "Basándote en x, responde: p. Guarda la respuesta como y."
+     * "Basandote en x, responde: p. Guarda la respuesta como y."
      */
     public static String traducirComandoALenguajeNatural(NodoComando cmd) {
         if (cmd == null) {
@@ -111,7 +125,7 @@ public final class BibliotecaGeneradorPromptZal {
         }
 
         String tipo = cmd.getTipoComando() != null ? cmd.getTipoComando().trim().toUpperCase() : "COMANDO";
-        String p = cmd.getExpresion() != null ? cmd.getExpresion().toString() : "";
+        String p = limpiarCadena(cmd.getExpresion() != null ? cmd.getExpresion().toString() : "");
         String y = cmd.getVariableDestino() != null ? cmd.getVariableDestino().trim() : "resultado";
 
         // Extraer conectores
@@ -123,7 +137,7 @@ public final class BibliotecaGeneradorPromptZal {
 
         for (NodoConector conector : cmd.getConectores()) {
             String cNombre = conector.getConector().toUpperCase();
-            String cValor = conector.getExpresion() != null ? conector.getExpresion().toString() : "";
+            String cValor = limpiarCadena(conector.getExpresion() != null ? conector.getExpresion().toString() : "");
             switch (cNombre) {
                 case "SOBRE":
                     fuente = cValor;
@@ -150,48 +164,53 @@ public final class BibliotecaGeneradorPromptZal {
         switch (tipo) {
             case "PREGUNTAR":
                 if (fuente != null) {
-                    sb.append("Basándote en ").append(fuente).append(", responde: ").append(p).append(".");
+                    sb.append("Basandote en ").append(fuente).append(", responde: ").append(p);
                 } else {
-                    sb.append("Responde: ").append(p).append(".");
+                    sb.append("Responde: ").append(p);
+                }
+                if (p.endsWith("?") || p.endsWith("!")) {
+                    sb.append(" ");
+                } else {
+                    sb.append(". ");
                 }
                 if (para != null) {
-                    sb.append(" Dirigido para ").append(para).append(".");
+                    sb.append("Dirigido para ").append(para).append(". ");
                 }
-                sb.append(" Guarda la respuesta como ").append(y).append(".");
+                sb.append("Guarda la respuesta como ").append(y).append(".");
                 break;
 
             case "GENERAR":
                 if (desde != null) {
                     sb.append("Genera ").append(p).append(" a partir de: ").append(desde).append(".");
                 } else if (fuente != null) {
-                    sb.append("Basándote en ").append(fuente).append(", genera: ").append(p).append(".");
+                    sb.append("Basandote en ").append(fuente).append(", genera: ").append(p).append(".");
                 } else {
-                    sb.append("Genera: ").append(p).append(".");
+                    sb.append("Genera ").append(p).append(".");
                 }
                 sb.append(" Guarda el resultado como ").append(y).append(".");
                 break;
 
             case "CODIFICAR":
                 if (desde != null) {
-                    sb.append("Genera el código de ").append(p).append(" a partir de: ").append(desde).append(".");
+                    sb.append("Genera el codigo de ").append(p).append(" a partir de: ").append(desde).append(".");
                 } else if (fuente != null) {
-                    sb.append("Basándote en ").append(fuente).append(", codifica: ").append(p).append(".");
+                    sb.append("Basandote en ").append(fuente).append(", codifica: ").append(p).append(".");
                 } else {
                     sb.append("Codifica: ").append(p).append(".");
                 }
                 if (en != null) {
                     sb.append(" en el entorno ").append(en).append(".");
                 }
-                sb.append(" Guarda el código resultante como ").append(y).append(".");
+                sb.append(" Guarda el resultado como ").append(y).append(".");
                 break;
 
             case "RESUMIR":
                 if (en != null) {
-                    sb.append("Resume ").append(p).append(" en un máximo de ").append(en).append(".");
+                    sb.append("Resume ").append(p).append(" en un maximo de ").append(en).append(".");
                 } else if (fuente != null) {
-                    sb.append("Basándote en ").append(fuente).append(", resume: ").append(p).append(".");
+                    sb.append("Basandote en ").append(fuente).append(", resume: ").append(p).append(".");
                 } else {
-                    sb.append("Resume: ").append(p).append(".");
+                    sb.append("Resume ").append(p).append(".");
                 }
                 sb.append(" Guarda el resultado como ").append(y).append(".");
                 break;
@@ -211,18 +230,18 @@ public final class BibliotecaGeneradorPromptZal {
                 if (fuente != null) {
                     sb.append("Analiza ").append(p).append(" considerando: ").append(fuente).append(".");
                 } else {
-                    sb.append("Analiza: ").append(p).append(".");
+                    sb.append("Analiza ").append(p).append(".");
                 }
                 sb.append(" Guarda el resultado como ").append(y).append(".");
                 break;
 
             case "CLASIFICAR":
                 if (en != null) {
-                    sb.append("Clasifica ").append(p).append(" en las categorías: ").append(en).append(".");
+                    sb.append("Clasifica ").append(p).append(" en las categorias: ").append(en).append(".");
                 } else if (fuente != null) {
-                    sb.append("Basándote en ").append(fuente).append(", clasifica: ").append(p).append(".");
+                    sb.append("Basandote en ").append(fuente).append(", clasifica: ").append(p).append(".");
                 } else {
-                    sb.append("Clasifica: ").append(p).append(".");
+                    sb.append("Clasifica ").append(p).append(".");
                 }
                 sb.append(" Guarda el resultado como ").append(y).append(".");
                 break;
@@ -233,14 +252,14 @@ public final class BibliotecaGeneradorPromptZal {
                 } else if (fuente != null) {
                     sb.append("Extrae ").append(p).append(" a partir de ").append(fuente).append(".");
                 } else {
-                    sb.append("Extrae: ").append(p).append(".");
+                    sb.append("Extrae ").append(p).append(".");
                 }
                 sb.append(" Guarda el resultado como ").append(y).append(".");
                 break;
 
             default:
                 if (fuente != null) {
-                    sb.append("Basándote en ").append(fuente).append(", ejecuta ").append(tipo).append(": ").append(p).append(".");
+                    sb.append("Basandote en ").append(fuente).append(", ejecuta ").append(tipo).append(": ").append(p).append(".");
                 } else {
                     sb.append("Ejecuta ").append(tipo).append(": ").append(p).append(".");
                 }
@@ -261,10 +280,27 @@ public final class BibliotecaGeneradorPromptZal {
     // =========================================================================
 
     /**
-     * Recorre el AST y genera el texto final del Prompt estructurado según la rúbrica:
-     * 1. Encabezado general con directivas declaradas (@modelo, @rol, @formato, etc.)
-     * 2. Listado de agentes según EJECUTAR con contexto, variables y traducción a lenguaje natural
-     * 3. Resultados solicitados por EXPORTAR al final del documento
+     * Recorre el AST y genera el texto final del Prompt en el formato
+     * canónico y oficial especificado en la página 8 del PDF:
+     *
+     * # Prompt generado con PromptZal
+     * Modelo destino: <modelo>
+     * Rol general: <rol>
+     * Formato de respuesta: <formato>
+     *
+     * ## Agente: <nombre>
+     * Contexto: <contexto>
+     *
+     * Variables disponibles:
+     * - <var>: contenido del archivo "<ruta>" (adjuntar el archivo)
+     * - <var>: <valor>
+     *
+     * Instrucciones:
+     * 1. <instrucción en lenguaje natural>
+     * 2. ...
+     *
+     * ## Resultado solicitado
+     * - <var>
      */
     public static String generarPromptFinal(NodoPrograma programa, TablaDeSimbolos tabla, Set<String> agentesEjecutados) {
         if (programa == null) {
@@ -272,93 +308,97 @@ public final class BibliotecaGeneradorPromptZal {
         }
 
         StringBuilder sb = new StringBuilder();
-        String separador = "======================================================================\n";
-        String separadorSec = "----------------------------------------------------------------------\n";
 
-        sb.append(separador);
-        sb.append("                  PROMPTZAL - ESPECIFICACIÓN DEL PROMPT FINAL\n");
-        sb.append(separador);
+        // 1. ENCABEZADO GENERAL
+        sb.append("# Prompt generado con PromptZal\n");
 
-        // 1. ENCABEZADO GENERAL CON DIRECTIVAS DECLARADAS
-        sb.append("\n[ENCABEZADO GENERAL - DIRECTIVAS DECLARADAS]\n");
-        if (programa.getDirectivas().isEmpty()) {
-            sb.append("  (No se declararon directivas explícitas. Se asumen parámetros por defecto)\n");
-        } else {
-            for (NodoDirectiva d : programa.getDirectivas()) {
-                String nombreDir = d.getNombre().toLowerCase();
-                String desc = DIRECTIVAS_VALIDAS.getOrDefault(nombreDir, "Directiva del sistema");
-                sb.append(String.format("  • %-18s : %-22s // %s\n", d.getNombre(), d.getValor(), desc));
+        String modelo = null;
+        String rol = null;
+        String formato = null;
+        java.util.Map<String, String> otrasDirectivas = new java.util.LinkedHashMap<>();
+
+        for (NodoDirectiva d : programa.getDirectivas()) {
+            String nombre = d.getNombre() != null ? d.getNombre().toLowerCase().trim() : "";
+            String val = limpiarCadena(d.getValor());
+            switch (nombre) {
+                case "@modelo":
+                    modelo = val;
+                    break;
+                case "@rol":
+                    rol = val;
+                    break;
+                case "@formato":
+                    formato = val;
+                    break;
+                default:
+                    otrasDirectivas.put(d.getNombre(), val);
+                    break;
             }
         }
 
-        // 2. LISTADO DE AGENTES SEGÚN EJECUTAR
-        sb.append("\n").append(separadorSec);
-        sb.append("[LISTADO DE AGENTES SEGÚN INSTRUCCIONES 'EJECUTAR']\n");
-        sb.append(separadorSec);
+        if (modelo != null) {
+            sb.append("Modelo destino: ").append(modelo).append("\n");
+        }
+        if (rol != null) {
+            sb.append("Rol general: ").append(rol).append("\n");
+        }
+        if (formato != null) {
+            sb.append("Formato de respuesta: ").append(formato).append("\n");
+        }
+        for (java.util.Map.Entry<String, String> entry : otrasDirectivas.entrySet()) {
+            String dirNombre = entry.getKey().startsWith("@") ? entry.getKey().substring(1) : entry.getKey();
+            dirNombre = Character.toUpperCase(dirNombre.charAt(0)) + dirNombre.substring(1);
+            sb.append(dirNombre).append(": ").append(entry.getValue()).append("\n");
+        }
 
-        if (agentesEjecutados == null || agentesEjecutados.isEmpty()) {
-            sb.append("  (No se invocó ningún agente mediante la instrucción EJECUTAR)\n");
-        } else {
-            int orden = 1;
+        // 2. AGENTES INVOCADOS SEGÚN 'EJECUTAR'
+        if (agentesEjecutados != null && !agentesEjecutados.isEmpty()) {
             for (String nombreAgente : agentesEjecutados) {
                 NodoAgente agente = programa.buscarAgente(nombreAgente);
                 if (agente == null) continue;
 
-                sb.append(String.format("\n%d. AGENTE: %s\n", orden++, agente.getNombre()));
-                sb.append("   • Contexto: ").append(agente.getContexto()).append("\n");
+                sb.append("\n## Agente: ").append(agente.getNombre()).append("\n");
+                sb.append("Contexto: ").append(limpiarCadena(agente.getContexto())).append("\n\n");
 
                 // Variables del agente
                 List<NodoVariable> vars = agente.getVariables();
                 if (!vars.isEmpty()) {
-                    sb.append("   • Variables locales:\n");
+                    sb.append("Variables disponibles:\n");
                     for (NodoVariable v : vars) {
-                        sb.append("       * ").append(v.getNombre()).append(" = ")
-                                .append(v.getExpresion() != null ? v.getExpresion().toString() : "").append("\n");
-                    }
-                }
-
-                // Comandos traducidos a lenguaje natural
-                List<NodoComando> cmds = agente.getComandos();
-                if (!cmds.isEmpty()) {
-                    sb.append("   • Instrucciones en lenguaje natural:\n");
-                    int paso = 1;
-                    for (NodoComando c : cmds) {
-                        String instruccionNatural = traducirComandoALenguajeNatural(c);
-                        sb.append(String.format("       Paso %d: %s\n", paso++, instruccionNatural));
-                    }
-                }
-            }
-        }
-
-        // 3. RESULTADOS SOLICITADOS POR EXPORTAR AL FINAL DEL DOCUMENTO
-        sb.append("\n").append(separadorSec);
-        sb.append("[RESULTADOS SOLICITADOS POR 'EXPORTAR']\n");
-        sb.append(separadorSec);
-
-        NodoExportar exp = programa.getExportar();
-        if (exp != null && !exp.getVariablesExportadas().isEmpty()) {
-            sb.append("Al finalizar la ejecución, devuelve y consolida los siguientes resultados:\n");
-            for (NodoExportar.ItemExportado item : exp.getVariablesExportadas()) {
-                String varName = item.getNombreVariable();
-                String origen = "Desconocido";
-                if (agentesEjecutados != null && tabla != null) {
-                    for (String ag : agentesEjecutados) {
-                        Simbolo sim = tabla.buscarVariableEnAgente(varName, ag);
-                        if (sim != null) {
-                            origen = "Agente '" + ag + "'";
-                            break;
+                        NodoExpresion exp = v.getExpresion();
+                        if (exp != null && exp.getTerminos().size() == 1
+                                && exp.getTerminos().get(0).getTipo() == com.mycompany.lenguajesproyecto2.BackEnd.Semantico.AST.NodoTermino.TipoTermino.CARGAR) {
+                            String ruta = limpiarCadena(exp.getTerminos().get(0).getRutaArchivo());
+                            sb.append("- ").append(v.getNombre()).append(": contenido del archivo \"").append(ruta).append("\" (adjuntar el archivo)\n");
+                        } else {
+                            String val = limpiarCadena(exp != null ? exp.toString() : "");
+                            sb.append("- ").append(v.getNombre()).append(": ").append(val).append("\n");
                         }
                     }
+                    sb.append("\n");
                 }
-                sb.append(String.format("  • %-18s (fuente: %s)\n", varName, origen));
+
+                // Instrucciones traducidas a lenguaje natural
+                List<NodoComando> cmds = agente.getComandos();
+                if (!cmds.isEmpty()) {
+                    sb.append("Instrucciones:\n");
+                    int paso = 1;
+                    for (NodoComando c : cmds) {
+                        String instr = traducirComandoALenguajeNatural(c);
+                        sb.append(paso++).append(". ").append(instr).append("\n");
+                    }
+                }
             }
-        } else {
-            sb.append("  (No se definieron variables a exportar en la instrucción EXPORTAR)\n");
         }
 
-        sb.append("\n").append(separador);
-        sb.append("                     FIN DEL DOCUMENTO PROMPTZAL\n");
-        sb.append(separador);
+        // 3. RESULTADOS SOLICITADOS SEGÚN 'EXPORTAR'
+        NodoExportar exp = programa.getExportar();
+        if (exp != null && !exp.getVariablesExportadas().isEmpty()) {
+            sb.append("\n## Resultado solicitado\n");
+            for (NodoExportar.ItemExportado item : exp.getVariablesExportadas()) {
+                sb.append("- ").append(item.getNombreVariable()).append("\n");
+            }
+        }
 
         return sb.toString();
     }

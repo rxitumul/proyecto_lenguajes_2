@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PromptZal - Reporte de Tabla de Símbolos</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root {
       --bg-dark: #0d1117;
@@ -138,6 +139,26 @@
       color: var(--text-muted);
       text-align: right;
     }
+    .charts-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 25px 0;
+    }
+    .chart-card {
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .chart-card h3 {
+      margin: 0 0 16px 0;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+    .chart-wrapper { position: relative; height: 220px; }
   </style>
 </head>
 <body>
@@ -151,6 +172,16 @@
     <div class="stat-card stat-agentes"><div class="val">1</div><div class="lbl">Agentes Declarados</div></div>
     <div class="stat-card stat-vars"><div class="val">3</div><div class="lbl">Variables Locales</div></div>
     <div class="stat-card stat-dirs"><div class="val">3</div><div class="lbl">Directivas Globales</div></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <h3>Distribución por tipo de símbolo</h3>
+      <div class="chart-wrapper"><canvas id="chartDona"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Símbolos por ámbito</h3>
+      <div class="chart-wrapper"><canvas id="chartBarras"></canvas></div>
+    </div>
   </div>
   <table>
     <thead>
@@ -231,8 +262,61 @@
     </tbody>
   </table>
   <div class="footer">
-    Generado automáticamente por el compilador PromptZal • 27/10/2026 01:55:52
+    Generado automáticamente por el compilador PromptZal • 27/10/2026 13:06:20
   </div>
 </div>
+<script>
+(function() {
+  Chart.defaults.color = '#8b949e';
+  Chart.defaults.borderColor = '#30363d';
+  const dAgentes = 1;
+  const dVars = 3;
+  const dDirs = 3;
+  const dGlobales = 4;
+  const dLocales = 3;
+  const total = dAgentes + dVars + dDirs;
+  new Chart(document.getElementById('chartDona'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Agentes', 'Variables', 'Directivas'],
+      datasets: [{
+        data: [dAgentes, dVars, dDirs],
+        backgroundColor: ['rgba(188,140,255,0.8)','rgba(63,185,80,0.8)','rgba(57,197,207,0.8)'],
+        borderColor: ['#bc8cff','#3fb950','#39c5cf'],
+        borderWidth: 2, hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#c9d1d9', padding: 14, font: { size: 12 } } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} (${total > 0 ? Math.round(ctx.raw*100/total) : 0}%)` } }
+      }
+    }
+  });
+  new Chart(document.getElementById('chartBarras'), {
+    type: 'bar',
+    data: {
+      labels: ['Global', 'Local (por agente)'],
+      datasets: [{
+        label: 'Cantidad',
+        data: [dGlobales, dLocales],
+        backgroundColor: ['rgba(88,166,255,0.5)','rgba(210,153,34,0.5)'],
+        borderColor: ['#58a6ff','#d29922'],
+        borderWidth: 2, borderRadius: 6
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { beginAtZero: true, ticks: { precision: 0, color: '#8b949e' }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#c9d1d9', font: { size: 13 } }, grid: { color: '#21262d' } }
+      }
+    }
+  });
+})();
+</script>
 </body>
 </html>

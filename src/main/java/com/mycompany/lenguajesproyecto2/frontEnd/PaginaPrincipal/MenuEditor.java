@@ -46,6 +46,7 @@ import com.mycompany.lenguajesproyecto2.frontEnd.MetodosDeAyudaGrafica.TextLineN
 import com.mycompany.lenguajesproyecto2.frontEnd.Pestana.PromptZal;
 import com.mycompany.lenguajesproyecto2.frontEnd.Pestana.ast;
 import com.mycompany.lenguajesproyecto2.frontEnd.Pestana.errores;
+import com.mycompany.lenguajesproyecto2.frontEnd.Pestana.TerminalPanel;
 
 /**
  *
@@ -58,6 +59,7 @@ public class MenuEditor extends javax.swing.JFrame {
     private PromptZal lenguajePromptzalPanel;
     private errores erroresPanel;
     private ast astPanel;
+    private TerminalPanel terminalPanel;
 
     private static final Color FONDO = new Color(29, 41, 81);
     private static final Color FONDO_SELECIONADO = new Color(17, 30, 108);
@@ -225,6 +227,7 @@ public class MenuEditor extends javax.swing.JFrame {
         terminal.setText("Terminal");
         terminal.setBorderPainted(false);
         terminal.setContentAreaFilled(false);
+        terminal.addActionListener(this::terminalActionPerformed);
 
         javax.swing.GroupLayout jbSuperioresLayout = new javax.swing.GroupLayout(jbSuperiores);
         jbSuperiores.setLayout(jbSuperioresLayout);
@@ -418,9 +421,9 @@ public class MenuEditor extends javax.swing.JFrame {
                 for (ErrorLexico err : erroresLexicos) {
                     sb.append("• ").append(err.toString()).append("\n");
                 }
-                mostrarPestanaPromptzal(sb.toString());
+                mostrarPestanaTerminal(sb.toString());
                 Configuraciones.pantallaDeError("Error Léxico",
-                        "Se detectaron errores léxicos en el código.\nConsulte la pestaña 'Errores Reportados'.");
+                        "Se detectaron errores léxicos en el código.\nConsulte la pestaña 'Terminal' y 'Errores Reportados'.");
                 return;
             }
 
@@ -442,9 +445,9 @@ public class MenuEditor extends javax.swing.JFrame {
                 for (ErrorSintactico err : listaErrores) {
                     sb.append("• ").append(err.toString()).append("\n");
                 }
-                mostrarPestanaPromptzal(sb.toString());
+                mostrarPestanaTerminal(sb.toString());
                 Configuraciones.pantallaDeError("Error Sintáctico",
-                        "Se detectaron errores sintácticos en el código.\nConsulte la pestaña 'Errores Reportados'.");
+                        "Se detectaron errores sintácticos en el código.\nConsulte la pestaña 'Terminal' y 'Errores Reportados'.");
                 return;
             }
 
@@ -467,9 +470,9 @@ public class MenuEditor extends javax.swing.JFrame {
                 for (ErrorSemantico err : erroresSem) {
                     sb.append("• ").append(err.toString()).append("\n");
                 }
-                mostrarPestanaPromptzal(sb.toString());
+                mostrarPestanaTerminal(sb.toString());
                 Configuraciones.pantallaDeError("Error Semántico",
-                        "Se detectaron " + erroresSem.size() + " error(es) semántico(s) en el código.\nConsulte la pestaña 'Errores Reportados'.");
+                        "Se detectaron " + erroresSem.size() + " error(es) semántico(s) en el código.\nConsulte la pestaña 'Terminal' y 'Errores Reportados'.");
                 return;
             }
 
@@ -480,8 +483,9 @@ public class MenuEditor extends javax.swing.JFrame {
                     ast, semantico.getTablaDeSimbolos(), semantico.getAgentesEjecutados());
             mostrarPestanaPromptzal(promptFinal);
 
-            // Guardar prompt generado en archivo físico
+            // Guardar prompt generado en archivos físicos (.txt y .md según PDF)
             BibliotecaGeneradorPromptZal.guardarPromptEnArchivo("salidas/prompt_final.txt", promptFinal);
+            BibliotecaGeneradorPromptZal.guardarPromptEnArchivo("salidas/prompt_final.md", promptFinal);
 
             // Generar los 3 reportes obligatorios del sistema
             new ReporteErroresHtml().crearReporte("reportes/reporte_errores.html",
@@ -493,6 +497,19 @@ public class MenuEditor extends javax.swing.JFrame {
 
             // Actualizar pestaña visual del AST en el IDE
             mostrarPestanaAST(ast);
+
+            // Notificación en la Terminal de compilación exitosa
+            StringBuilder sbExito = new StringBuilder();
+            sbExito.append("====================================================\n");
+            sbExito.append("   COMPILACIÓN EXITOSA - PROMPTZAL GENERADO\n");
+            sbExito.append("====================================================\n");
+            sbExito.append("• Análisis léxico: 0 errores\n");
+            sbExito.append("• Análisis sintáctico: 0 errores (AST generado)\n");
+            sbExito.append("• Análisis semántico: 0 errores (Tabla de símbolos validada)\n");
+            sbExito.append("• Agentes ejecutados: ").append(semantico.getAgentesEjecutados().size()).append("\n");
+            sbExito.append("• Salida guardada en: salidas/prompt_final.txt y salidas/prompt_final.md\n");
+            sbExito.append("• Reportes HTML generados en carpeta: reportes/\n");
+            mostrarPestanaTerminal(sbExito.toString());
 
             Configuraciones.mensajeSi("Compilación Exitosa",
                     "¡Código validado léxica, sintáctica y semánticamente con éxito!\nPromptZal generado y reportes exportados correctamente.");
@@ -636,11 +653,41 @@ public class MenuEditor extends javax.swing.JFrame {
             jTabbleDeOpciones.setSelectedIndex(indexExistente);
         } else {
             if (lenguajePromptzalPanel == null) {
-                lenguajePromptzalPanel = new PromptZal(texto != null ? texto : "// Consola Promptzal\n");
+                lenguajePromptzalPanel = new PromptZal(texto != null ? texto : "# Prompt generado con PromptZal\n// Presione 'Copilar' para generar el prompt a partir del código fuente.\n");
             } else if (texto != null) {
                 lenguajePromptzalPanel.actualizarContenido(texto);
             }
             jTabbleDeOpciones.addTab("Lenguaje Promptzal", lenguajePromptzalPanel);
+            jTabbleDeOpciones.setSelectedIndex(jTabbleDeOpciones.getTabCount() - 1);
+        }
+    }
+
+    private void terminalActionPerformed(java.awt.event.ActionEvent evt) {
+        mostrarPestanaTerminal(null);
+    }
+
+    public void mostrarPestanaTerminal(String texto) {
+        int indexExistente = -1;
+        for (int i = 0; i < jTabbleDeOpciones.getTabCount(); i++) {
+            if (jTabbleDeOpciones.getTitleAt(i).trim().equalsIgnoreCase("Terminal")) {
+                indexExistente = i;
+                break;
+            }
+        }
+
+        if (indexExistente != -1) {
+            TerminalPanel panelActual = (TerminalPanel) jTabbleDeOpciones.getComponentAt(indexExistente);
+            if (texto != null && !texto.trim().isEmpty()) {
+                panelActual.imprimir(texto);
+            }
+            jTabbleDeOpciones.setSelectedIndex(indexExistente);
+        } else {
+            if (terminalPanel == null) {
+                terminalPanel = new TerminalPanel(texto);
+            } else if (texto != null && !texto.trim().isEmpty()) {
+                terminalPanel.imprimir(texto);
+            }
+            jTabbleDeOpciones.addTab("Terminal", terminalPanel);
             jTabbleDeOpciones.setSelectedIndex(jTabbleDeOpciones.getTabCount() - 1);
         }
     }

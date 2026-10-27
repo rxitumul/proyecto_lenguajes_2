@@ -70,12 +70,12 @@ public class BackendRubricaTest {
         String promptFinal = BibliotecaGeneradorPromptZal.generarPromptFinal(
                 ast, semantico.getTablaDeSimbolos(), semantico.getAgentesEjecutados());
         assertNotNull(promptFinal);
-        assertTrue(promptFinal.contains("PROMPTZAL - ESPECIFICACIÓN DEL PROMPT FINAL"));
-        assertTrue(promptFinal.contains("@modelo"));
-        assertTrue(promptFinal.contains("AGENTE: Investigador"));
-        assertTrue(promptFinal.contains("Resume") || promptFinal.contains("Sintetiza"));
-        assertTrue(promptFinal.contains("Basándote en resumen"));
-        assertTrue(promptFinal.contains("EXPORTAR"));
+        assertTrue(promptFinal.contains("# Prompt generado con PromptZal"));
+        assertTrue(promptFinal.contains("Modelo destino: gpt-4"));
+        assertTrue(promptFinal.contains("## Agente: Investigador"));
+        assertTrue(promptFinal.contains("Resume"));
+        assertTrue(promptFinal.contains("Basandote en resumen"));
+        assertTrue(promptFinal.contains("## Resultado solicitado"));
         assertTrue(promptFinal.contains("resumen"));
         assertTrue(promptFinal.contains("prediccion"));
         assertTrue(promptFinal.contains("textoFinal"));

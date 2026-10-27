@@ -12,6 +12,7 @@ com/mycompany/lenguajesproyecto2/frontEnd/Pestana/errores$1.class
 com/mycompany/lenguajesproyecto2/BackEnd/Reportes/ListasEnlazadas/ErrorLexico.class
 com/mycompany/lenguajesproyecto2/BackEnd/Reportes/ReportesHtml.class
 com/mycompany/lenguajesproyecto2/BackEnd/Semantico/AST/NodoExportar.class
+com/mycompany/lenguajesproyecto2/frontEnd/Pestana/TerminalPanel.class
 com/mycompany/lenguajesproyecto2/BackEnd/Reportes/RegistroDeTokens.class
 com/mycompany/lenguajesproyecto2/BackEnd/Semantico/ErrorSemantico.class
 com/mycompany/lenguajesproyecto2/frontEnd/MetodosDeAyudaGrafica/TextLineNumber$1.class
