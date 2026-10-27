@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PromptZal - Reporte de Errores de Compilación</title>
+  <style>
+    :root {
+      --bg-dark: #0d1117;
+      --bg-card: #161b22;
+      --bg-hover: #1f242c;
+      --border-color: #30363d;
+      --text-main: #c9d1d9;
+      --text-muted: #8b949e;
+      --accent-blue: #58a6ff;
+      --accent-red: #f85149;
+      --accent-orange: #d29922;
+      --accent-purple: #bc8cff;
+      --accent-green: #3fb950;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      margin: 0;
+      padding: 30px 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .header {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+    }
+    h1 {
+      color: var(--accent-blue);
+      margin: 0 0 10px 0;
+      font-size: 26px;
+    }
+    p.sub {
+      color: var(--text-muted);
+      margin: 0;
+      font-size: 14px;
+    }
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    .stat-card {
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 15px 20px;
+    }
+    .stat-card .val {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .stat-card .lbl {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+    .stat-total .val { color: var(--accent-red); }
+    .stat-lex .val { color: var(--accent-orange); }
+    .stat-sin .val { color: var(--accent-purple); }
+    .stat-sem .val { color: #f0883e; }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge-lex { background: rgba(210, 153, 34, 0.2); color: var(--accent-orange); border: 1px solid rgba(210, 153, 34, 0.4); }
+    .badge-sin { background: rgba(188, 140, 255, 0.2); color: var(--accent-purple); border: 1px solid rgba(188, 140, 255, 0.4); }
+    .badge-sem { background: rgba(240, 136, 62, 0.2); color: #f0883e; border: 1px solid rgba(240, 136, 62, 0.4); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 15px;
+    }
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    th {
+      background: #21262d;
+      color: #f0f6fc;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+    tr:hover {
+      background: var(--bg-hover);
+    }
+    .code-pill {
+      font-family: 'Consolas', 'Courier New', monospace;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .success-box {
+      background: rgba(63, 185, 80, 0.1);
+      border: 1px solid var(--accent-green);
+      border-radius: 8px;
+      padding: 25px;
+      text-align: center;
+      color: var(--accent-green);
+      font-size: 16px;
+      font-weight: 500;
+      margin-top: 20px;
+    }
+    .footer {
+      margin-top: 30px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border-color);
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Reporte Consolidado de Errores de Compilación</h1>
+    <p class="sub">Detalle de errores léxicos, sintácticos y semánticos detectados en el código PromptZal.</p>
+  </div>
+  <div class="stats-container">
+    <div class="stat-card stat-total"><div class="val">0</div><div class="lbl">Total de Errores</div></div>
+    <div class="stat-card stat-lex"><div class="val">0</div><div class="lbl">Errores Léxicos</div></div>
+    <div class="stat-card stat-sin"><div class="val">0</div><div class="lbl">Errores Sintácticos</div></div>
+    <div class="stat-card stat-sem"><div class="val">0</div><div class="lbl">Errores Semánticos</div></div>
+  </div>
+  <div class="success-box">
+    ✓ ¡Compilación exitosa! No se detectaron errores léxicos, sintácticos ni semánticos en el programa.
+  </div>
+  <div class="footer">
+    Generado automáticamente por el compilador PromptZal • 27/10/2026 01:55:52
+  </div>
+</div>
+</body>
+</html>

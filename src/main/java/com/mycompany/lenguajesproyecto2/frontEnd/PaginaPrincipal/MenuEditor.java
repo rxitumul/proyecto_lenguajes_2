@@ -41,6 +41,7 @@ import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.BibliotecaGeneradorPro
 import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.ErrorSemantico;
 import com.mycompany.lenguajesproyecto2.BackEnd.Semantico.AST.NodoPrograma;
 import com.mycompany.lenguajesproyecto2.frontEnd.Configuraciones;
+import com.mycompany.lenguajesproyecto2.frontEnd.MetodosDeAyudaGrafica.PintorDeTokens;
 import com.mycompany.lenguajesproyecto2.frontEnd.MetodosDeAyudaGrafica.TextLineNumber;
 import com.mycompany.lenguajesproyecto2.frontEnd.Pestana.PromptZal;
 import com.mycompany.lenguajesproyecto2.frontEnd.Pestana.ast;
@@ -73,6 +74,7 @@ public class MenuEditor extends javax.swing.JFrame {
         number.setForeground(TEXTO);
         jsEditor.setRowHeaderView(number);
         colorLetrasTree();
+        PintorDeTokens.colorearEditor(jtaEditor);
     }
 
     /**
@@ -97,7 +99,7 @@ public class MenuEditor extends javax.swing.JFrame {
         fondoEditor = new javax.swing.JPanel();
         nombreArchivo = new javax.swing.JLabel();
         jsEditor = new javax.swing.JScrollPane();
-        jtaEditor = new javax.swing.JTextArea();
+        jtaEditor = new javax.swing.JTextPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -140,10 +142,11 @@ public class MenuEditor extends javax.swing.JFrame {
         nombreArchivo.setText("Archivo pz");
         fondoEditor.add(nombreArchivo, java.awt.BorderLayout.PAGE_START);
 
+        jtaEditor = new javax.swing.JTextPane();
         jtaEditor.setBackground(new java.awt.Color(29, 41, 81));
-        jtaEditor.setColumns(20);
         jtaEditor.setForeground(new java.awt.Color(255, 255, 255));
-        jtaEditor.setRows(5);
+        jtaEditor.setCaretColor(java.awt.Color.WHITE);
+        jtaEditor.setFont(new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 14));
         jsEditor.setViewportView(jtaEditor);
 
         fondoEditor.add(jsEditor, java.awt.BorderLayout.CENTER);
@@ -283,6 +286,13 @@ public class MenuEditor extends javax.swing.JFrame {
         reportesHtml.setContentAreaFilled(false);
         reportesHtml.addActionListener(this::reportesHtmlActionPerformed);
 
+        pintarTokens = new javax.swing.JButton();
+        pintarTokens.setForeground(java.awt.Color.white);
+        pintarTokens.setText("Pintar Tokens");
+        pintarTokens.setBorderPainted(false);
+        pintarTokens.setContentAreaFilled(false);
+        pintarTokens.addActionListener(this::pintarTokensActionPerformed);
+
         javax.swing.GroupLayout jbInferioresLayout = new javax.swing.GroupLayout(jbInferiores);
         jbInferiores.setLayout(jbInferioresLayout);
         jbInferioresLayout.setHorizontalGroup(
@@ -298,6 +308,8 @@ public class MenuEditor extends javax.swing.JFrame {
                 .addComponent(copilar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(reportesHtml)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pintarTokens)
                 .addContainerGap(15, Short.MAX_VALUE))
         );
         jbInferioresLayout.setVerticalGroup(
@@ -308,7 +320,8 @@ public class MenuEditor extends javax.swing.JFrame {
                     .addComponent(crearArchivo)
                     .addComponent(guardar)
                     .addComponent(copilar)
-                    .addComponent(reportesHtml))
+                    .addComponent(reportesHtml)
+                    .addComponent(pintarTokens))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -344,6 +357,7 @@ public class MenuEditor extends javax.swing.JFrame {
             modeloArbol.reload();
 
             jtaEditor.setText("// Nuevo archivo Promptzal\n");
+            PintorDeTokens.colorearEditor(jtaEditor);
         }
     }// GEN-LAST:event_crearArchivoActionPerformed
 
@@ -373,6 +387,7 @@ public class MenuEditor extends javax.swing.JFrame {
     }// GEN-LAST:event_guardarActionPerformed
 
     private void copilarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_copilarActionPerformed
+        PintorDeTokens.colorearEditor(jtaEditor);
         String codigoFuente = jtaEditor.getText();
         if (codigoFuente == null || codigoFuente.trim().isEmpty()) {
             Configuraciones.pantallaDeError("Advertencia",
@@ -745,22 +760,29 @@ public class MenuEditor extends javax.swing.JFrame {
     private javax.swing.JPanel jbInferiores;
     private javax.swing.JPanel jbSuperiores;
     private javax.swing.JScrollPane jsEditor;
-    private javax.swing.JTextArea jtaEditor;
+    private javax.swing.JTextPane jtaEditor;
     private javax.swing.JTree jtreeCarpetas;
     private javax.swing.JLabel nombreArchivo;
+    private javax.swing.JButton pintarTokens;
     private javax.swing.JButton promptzal;
     private javax.swing.JButton reportesHtml;
     private javax.swing.JButton terminal;
     // End of variables declaration//GEN-END:variables
 
+    private void pintarTokensActionPerformed(java.awt.event.ActionEvent evt) {
+        PintorDeTokens.colorearEditor(jtaEditor);
+    }
+
     private void escritorDePz(String phat) {
         File archivo = new File(phat);
-        jtaEditor.setText("");
+        StringBuilder sb = new StringBuilder();
         try (BufferedReader lectorPrincipal = new BufferedReader(new FileReader(archivo))) {
             String linea;
             while ((linea = lectorPrincipal.readLine()) != null) {
-                jtaEditor.append(linea + "\n");
+                sb.append(linea).append("\n");
             }
+            jtaEditor.setText(sb.toString());
+            PintorDeTokens.colorearEditor(jtaEditor);
         } catch (IOException e) {
             Configuraciones.pantallaDeError("Error", "Error al leer el archivo: " + e.getMessage());
         }

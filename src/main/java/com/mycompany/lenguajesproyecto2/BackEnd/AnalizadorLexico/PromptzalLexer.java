@@ -315,7 +315,17 @@ public class PromptzalLexer {
     }
 
     public List<TokenEntidad> getListaDeTokens() {
-        return tokensEncontrados;
+        List<TokenEntidad> utiles = new ArrayList<>();
+        for (TokenEntidad tok : tokensEncontrados) {
+            if (!"ESPACIO".equals(tok.getTipo()) && !"COMENTARIO".equals(tok.getTipo())) {
+                utiles.add(tok);
+            }
+        }
+        return utiles;
+    }
+
+    public List<TokenEntidad> getTodosLosTokens() {
+        return new ArrayList<>(tokensEncontrados);
     }
 
 
@@ -743,7 +753,7 @@ public class PromptzalLexer {
           // fall through
           case 10: break;
           case 2:
-            { /* Ignorar espacios */
+            { return agregarToken("ESPACIO", yytext());
             }
           // fall through
           case 11: break;
@@ -778,7 +788,7 @@ public class PromptzalLexer {
           // fall through
           case 15: break;
           case 7:
-            { /* Ignorar comentarios de una línea */
+            { return agregarToken("COMENTARIO", yytext());
             }
           // fall through
           case 16: break;
@@ -791,7 +801,7 @@ public class PromptzalLexer {
           // fall through
           case 17: break;
           case 9:
-            { /* Ignorar comentarios multilínea */
+            { return agregarToken("COMENTARIO", yytext());
             }
           // fall through
           case 18: break;

@@ -34,7 +34,17 @@ import com.mycompany.lenguajesproyecto2.BackEnd.Reportes.ListasEnlazadas.ErrorLe
     }
 
     public List<TokenEntidad> getListaDeTokens() {
-        return tokensEncontrados;
+        List<TokenEntidad> utiles = new ArrayList<>();
+        for (TokenEntidad tok : tokensEncontrados) {
+            if (!"ESPACIO".equals(tok.getTipo()) && !"COMENTARIO".equals(tok.getTipo())) {
+                utiles.add(tok);
+            }
+        }
+        return utiles;
+    }
+
+    public List<TokenEntidad> getTodosLosTokens() {
+        return new ArrayList<>(tokensEncontrados);
     }
 %}
 
@@ -50,10 +60,10 @@ SimboloSimple    = "{" | "}" | "(" | ")" | "=" | "+" | "," | ";" | ":" | "." | "
 
 %%
 
-{Espacio}       { /* Ignorar espacios */ }
+{Espacio}       { return agregarToken("ESPACIO", yytext()); }
 
-"//".*          { /* Ignorar comentarios de una línea */ }
-"/*" [^*] ~"*/" | "/*" "*"+ "/"  { /* Ignorar comentarios multilínea */ }
+"//".*          { return agregarToken("COMENTARIO", yytext()); }
+"/*" [^*] ~"*/" | "/*" "*"+ "/"  { return agregarToken("COMENTARIO", yytext()); }
 
 // Directivas (consultadas dinámicamente desde BibliotecaDeTokens)
 {Directiva}     { 

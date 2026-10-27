@@ -21,6 +21,7 @@ com/mycompany/lenguajesproyecto2/BackEnd/Reportes/ReporteASTHtml.class
 com/mycompany/lenguajesproyecto2/BackEnd/AnalizadorSintactico/ErrorSintactico.class
 com/mycompany/lenguajesproyecto2/BackEnd/Reportes/ReporteTablaSimbolosHtml$1.class
 com/mycompany/lenguajesproyecto2/BackEnd/Semantico/AST/NodoComando.class
+com/mycompany/lenguajesproyecto2/frontEnd/MetodosDeAyudaGrafica/PintorDeTokens.class
 com/mycompany/lenguajesproyecto2/BackEnd/BibliotecaCarpeta/BibliotecaDeDot.class
 com/mycompany/lenguajesproyecto2/BackEnd/Semantico/AST/NodoTermino$TipoTermino.class
 com/mycompany/lenguajesproyecto2/BackEnd/Semantico/AST/NodoPrograma.class
@@ -37,7 +38,9 @@ com/mycompany/lenguajesproyecto2/BackEnd/AnalizadorSintactico/Terminal.class
 com/mycompany/lenguajesproyecto2/BackEnd/AnalizadorSintactico/ErrorSintacticoException.class
 com/mycompany/lenguajesproyecto2/BackEnd/Semantico/AST/NodoTermino.class
 com/mycompany/lenguajesproyecto2/BackEnd/Reportes/ReporteTablaSimbolosHtml$2.class
+com/mycompany/lenguajesproyecto2/LenguajesProyecto2.class
 com/mycompany/lenguajesproyecto2/BackEnd/Reportes/ReporteErroresHtml.class
+com/mycompany/lenguajesproyecto2/frontEnd/PaginaPrincipal/MenuEditor.class
 com/mycompany/lenguajesproyecto2/frontEnd/MetodosDeAyudaGrafica/TextLineNumber.class
 com/mycompany/lenguajesproyecto2/BackEnd/Contenedores/ItemArchivo.class
 com/mycompany/lenguajesproyecto2/BackEnd/Semantico/AST/NodoExportar$ItemExportado.class

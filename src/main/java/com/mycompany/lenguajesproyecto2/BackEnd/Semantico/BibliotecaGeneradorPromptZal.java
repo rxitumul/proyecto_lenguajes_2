@@ -115,9 +115,10 @@ public final class BibliotecaGeneradorPromptZal {
         String y = cmd.getVariableDestino() != null ? cmd.getVariableDestino().trim() : "resultado";
 
         // Extraer conectores
-        String fuente = null;
-        String formato = null;
-        String idioma = null;
+        String fuente = null;  // SOBRE
+        String desde = null;   // DESDE
+        String en = null;      // EN
+        String formato = null; // COMO
         String para = null;
 
         for (NodoConector conector : cmd.getConectores()) {
@@ -127,11 +128,14 @@ public final class BibliotecaGeneradorPromptZal {
                 case "SOBRE":
                     fuente = cValor;
                     break;
+                case "DESDE":
+                    desde = cValor;
+                    break;
                 case "COMO":
                     formato = cValor;
                     break;
                 case "EN":
-                    idioma = cValor;
+                    en = cValor;
                     break;
                 case "PARA":
                     para = cValor;
@@ -148,117 +152,105 @@ public final class BibliotecaGeneradorPromptZal {
                 if (fuente != null) {
                     sb.append("Basándote en ").append(fuente).append(", responde: ").append(p).append(".");
                 } else {
-                    sb.append("Responde a la siguiente consulta: ").append(p).append(".");
-                }
-                if (formato != null) {
-                    sb.append(" Proporciona la respuesta en formato ").append(formato).append(".");
-                }
-                if (idioma != null) {
-                    sb.append(" en idioma ").append(idioma).append(".");
+                    sb.append("Responde: ").append(p).append(".");
                 }
                 if (para != null) {
-                    sb.append(" dirigido para ").append(para).append(".");
+                    sb.append(" Dirigido para ").append(para).append(".");
                 }
                 sb.append(" Guarda la respuesta como ").append(y).append(".");
                 break;
 
             case "GENERAR":
-                if (fuente != null) {
+                if (desde != null) {
+                    sb.append("Genera ").append(p).append(" a partir de: ").append(desde).append(".");
+                } else if (fuente != null) {
                     sb.append("Basándote en ").append(fuente).append(", genera: ").append(p).append(".");
                 } else {
-                    sb.append("Genera el siguiente contenido: ").append(p).append(".");
-                }
-                if (formato != null) {
-                    sb.append(" en formato ").append(formato).append(".");
-                }
-                if (idioma != null) {
-                    sb.append(" en idioma ").append(idioma).append(".");
+                    sb.append("Genera: ").append(p).append(".");
                 }
                 sb.append(" Guarda el resultado como ").append(y).append(".");
                 break;
 
             case "CODIFICAR":
-                if (fuente != null) {
+                if (desde != null) {
+                    sb.append("Genera el código de ").append(p).append(" a partir de: ").append(desde).append(".");
+                } else if (fuente != null) {
                     sb.append("Basándote en ").append(fuente).append(", codifica: ").append(p).append(".");
                 } else {
-                    sb.append("Genera el código correspondiente para: ").append(p).append(".");
+                    sb.append("Codifica: ").append(p).append(".");
                 }
-                if (formato != null || idioma != null) {
-                    sb.append(" Implementa la solución en ").append(formato != null ? formato : idioma).append(".");
+                if (en != null) {
+                    sb.append(" en el entorno ").append(en).append(".");
                 }
                 sb.append(" Guarda el código resultante como ").append(y).append(".");
                 break;
 
             case "RESUMIR":
-                if (fuente != null) {
-                    sb.append("Basándote en ").append(fuente).append(", sintetiza y resume: ").append(p).append(".");
+                if (en != null) {
+                    sb.append("Resume ").append(p).append(" en un máximo de ").append(en).append(".");
+                } else if (fuente != null) {
+                    sb.append("Basándote en ").append(fuente).append(", resume: ").append(p).append(".");
                 } else {
-                    sb.append("Sintetiza y resume el siguiente texto: ").append(p).append(".");
+                    sb.append("Resume: ").append(p).append(".");
                 }
-                if (formato != null) {
-                    sb.append(" en formato ").append(formato).append(".");
-                }
-                sb.append(" Guarda el resumen como ").append(y).append(".");
+                sb.append(" Guarda el resultado como ").append(y).append(".");
                 break;
 
             case "TRADUCIR":
                 sb.append("Traduce ").append(p);
-                if (idioma != null) {
-                    sb.append(" al idioma ").append(idioma);
+                if (en != null) {
+                    sb.append(" al idioma ").append(en);
                 }
                 if (fuente != null) {
                     sb.append(" tomando como referencia ").append(fuente);
                 }
-                sb.append(". Guarda la traducción como ").append(y).append(".");
+                sb.append(". Guarda el resultado como ").append(y).append(".");
                 break;
 
             case "ANALIZAR":
                 if (fuente != null) {
-                    sb.append("Basándote en ").append(fuente).append(", analiza detalladamente: ").append(p).append(".");
+                    sb.append("Analiza ").append(p).append(" considerando: ").append(fuente).append(".");
                 } else {
-                    sb.append("Analiza detalladamente: ").append(p).append(".");
+                    sb.append("Analiza: ").append(p).append(".");
                 }
-                if (formato != null) {
-                    sb.append(" en formato ").append(formato).append(".");
-                }
-                sb.append(" Guarda el análisis como ").append(y).append(".");
+                sb.append(" Guarda el resultado como ").append(y).append(".");
                 break;
 
             case "CLASIFICAR":
-                if (fuente != null) {
+                if (en != null) {
+                    sb.append("Clasifica ").append(p).append(" en las categorías: ").append(en).append(".");
+                } else if (fuente != null) {
                     sb.append("Basándote en ").append(fuente).append(", clasifica: ").append(p).append(".");
                 } else {
-                    sb.append("Clasifica el siguiente contenido: ").append(p).append(".");
+                    sb.append("Clasifica: ").append(p).append(".");
                 }
-                if (formato != null) {
-                    sb.append(" dentro de las categorías o formato ").append(formato).append(".");
-                }
-                sb.append(" Guarda la clasificación como ").append(y).append(".");
+                sb.append(" Guarda el resultado como ").append(y).append(".");
                 break;
 
             case "EXTRAER":
-                if (fuente != null) {
-                    sb.append("Basándote en ").append(fuente).append(", extrae la información correspondiente a: ").append(p).append(".");
+                if (desde != null) {
+                    sb.append("Extrae ").append(p).append(" a partir de ").append(desde).append(".");
+                } else if (fuente != null) {
+                    sb.append("Extrae ").append(p).append(" a partir de ").append(fuente).append(".");
                 } else {
-                    sb.append("Extrae la siguiente información: ").append(p).append(".");
+                    sb.append("Extrae: ").append(p).append(".");
                 }
-                if (formato != null) {
-                    sb.append(" en formato ").append(formato).append(".");
-                }
-                sb.append(" Guarda los datos extraídos como ").append(y).append(".");
+                sb.append(" Guarda el resultado como ").append(y).append(".");
                 break;
 
             default:
                 if (fuente != null) {
-                    sb.append("Basándote en ").append(fuente).append(", ejecuta la instrucción ").append(tipo).append(": ").append(p).append(".");
+                    sb.append("Basándote en ").append(fuente).append(", ejecuta ").append(tipo).append(": ").append(p).append(".");
                 } else {
-                    sb.append("Ejecuta la instrucción ").append(tipo).append(": ").append(p).append(".");
+                    sb.append("Ejecuta ").append(tipo).append(": ").append(p).append(".");
                 }
-                if (formato != null) {
-                    sb.append(" en formato ").append(formato).append(".");
-                }
-                sb.append(" Guarda la respuesta como ").append(y).append(".");
+                sb.append(" Guarda el resultado como ").append(y).append(".");
                 break;
+        }
+
+        // Si incluye conector COMO f (en cualquier comando según rúbrica)
+        if (formato != null && !formato.trim().isEmpty()) {
+            sb.append(" Entrega el resultado en formato ").append(formato).append(".");
         }
 
         return sb.toString();

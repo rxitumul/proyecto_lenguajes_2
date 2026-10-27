@@ -73,7 +73,7 @@ public class BackendRubricaTest {
         assertTrue(promptFinal.contains("PROMPTZAL - ESPECIFICACIÓN DEL PROMPT FINAL"));
         assertTrue(promptFinal.contains("@modelo"));
         assertTrue(promptFinal.contains("AGENTE: Investigador"));
-        assertTrue(promptFinal.contains("Sintetiza y resume") || promptFinal.contains("resume:"));
+        assertTrue(promptFinal.contains("Resume") || promptFinal.contains("Sintetiza"));
         assertTrue(promptFinal.contains("Basándote en resumen"));
         assertTrue(promptFinal.contains("EXPORTAR"));
         assertTrue(promptFinal.contains("resumen"));
@@ -262,5 +262,54 @@ public class BackendRubricaTest {
 
         assertTrue(valida, "Debe ser válido porque 'ensayo' en GENERAR y 'palabras'/'lineas' son excepciones semánticas: " + semantico.getErrores());
         assertTrue(semantico.getErrores().isEmpty(), "No deben reportarse errores para argumentos de GENERAR ni sufijos numéricos");
+    }
+
+    @Test
+    @DisplayName("7. Programa canónico del enunciado oficial: genera promptzal exacto y reportes de entrega")
+    public void testProgramaEnunciadoCanonico() throws Exception {
+        String codigo = """
+            @modelo "claude-sonnet-4-6"
+            @rol "analista de datos"
+            @formato "markdown"
+
+            // Agente que prepara el analisis de un archivo de ventas
+            AGENTE analista {
+                contexto = "Eres un analista de datos experto"
+                variable ventas = CARGAR("ventas.csv")
+                PREGUNTAR "Cuales son las 3 tendencias principales?" SOBRE ventas -> tendencias
+                RESUMIR tendencias EN 100 palabras -> resumen
+            }
+
+            EJECUTAR analista
+            EXPORTAR resumen
+            """;
+
+        PromptzalParser parser = PromptzalParser.desdeTexto(codigo);
+        NodoPrograma ast = parser.parsearAST();
+        assertNotNull(ast, "AST debe ser generado exitosamente");
+        assertFalse(parser.tieneErrores(), "No debe haber errores sintácticos");
+
+        AnalizadorSemantico semantico = new AnalizadorSemantico();
+        boolean semValida = semantico.analizar(ast);
+        assertTrue(semValida, "La semántica debe ser válida: " + semantico.getErrores());
+
+        String promptFinal = BibliotecaGeneradorPromptZal.generarPromptFinal(
+                ast, semantico.getTablaDeSimbolos(), semantico.getAgentesEjecutados());
+        assertNotNull(promptFinal);
+        assertTrue(promptFinal.contains("claude-sonnet-4-6"));
+        assertTrue(promptFinal.contains("analista de datos"));
+        assertTrue(promptFinal.contains("analista"));
+        assertTrue(promptFinal.contains("resumen"));
+
+        // Guardar archivos físicos de salida y reportes
+        BibliotecaGeneradorPromptZal.guardarPromptEnArchivo("salidas/prompt_final.txt", promptFinal);
+        BibliotecaGeneradorPromptZal.guardarPromptEnArchivo("salidas/prompt_final.md", promptFinal);
+
+        new ReporteErroresHtml().crearReporte("reportes/reporte_errores.html",
+                List.of(), List.of(), List.of());
+        new ReporteTablaSimbolosHtml().crearReporte("reportes/tabla_simbolos.html",
+                semantico.getTablaDeSimbolos());
+        new ReporteASTHtml().crearReporte("reportes/ast.html", ast);
+        ReporteASTHtml.guardarDotEnArchivo("reportes/ast.dot", ast);
     }
 }

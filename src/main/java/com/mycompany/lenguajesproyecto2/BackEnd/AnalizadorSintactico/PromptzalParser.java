@@ -48,7 +48,14 @@ public class PromptzalParser {
      * Construye un nuevo parser a partir de una lista secuencial de tokens.
      */
     public PromptzalParser(List<TokenEntidad> tokens) {
-        this.tokens = tokens != null ? new ArrayList<>(tokens) : new ArrayList<>();
+        this.tokens = new ArrayList<>();
+        if (tokens != null) {
+            for (TokenEntidad tok : tokens) {
+                if (!"ESPACIO".equals(tok.getTipo()) && !"COMENTARIO".equals(tok.getTipo())) {
+                    this.tokens.add(tok);
+                }
+            }
+        }
         this.indice = 0;
         this.errores = new ArrayList<>();
         this.arbolSintactico = null;
