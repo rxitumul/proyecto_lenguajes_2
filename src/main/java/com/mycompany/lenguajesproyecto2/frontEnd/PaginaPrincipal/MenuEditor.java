@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.awt.*;
@@ -398,6 +399,8 @@ public class MenuEditor extends javax.swing.JFrame {
             return;
         }
 
+        int pestanaSeleccionadaPrevia = jTabbleDeOpciones.getSelectedIndex();
+
         try {
             PromptzalLexer lexer = new PromptzalLexer(new StringReader(codigoFuente));
             while (lexer.yylex() != null) {
@@ -408,9 +411,19 @@ public class MenuEditor extends javax.swing.JFrame {
             List<ErrorLexico> erroresLexicos = lexer.getErroresLexicos();
 
             if (!erroresLexicos.isEmpty()) {
-                mostrarPestanaErrores(erroresLexicos, Collections.emptyList(), Collections.emptyList());
+                List<String> detalles = new ArrayList<>();
+                for (ErrorLexico err : erroresLexicos) {
+                    detalles.add(err.toString());
+                }
 
-                // Generar reporte HTML de errores
+                // 1. Cargar nueva información eliminando resultados anteriores
+                actualizarPestanaErrores(erroresLexicos, Collections.emptyList(), Collections.emptyList(), false);
+                actualizarPestanaASTError("Léxica", detalles, null, false);
+                String msgPrompt = generarMensajeErrorPromptzal("Léxica", detalles);
+                actualizarPestanaPromptzal(msgPrompt, false);
+                BibliotecaGeneradorPromptZal.guardarPromptEnArchivo("salidas/prompt_final.txt", msgPrompt);
+                BibliotecaGeneradorPromptZal.guardarPromptEnArchivo("salidas/prompt_final.md", msgPrompt);
+
                 new ReporteErroresHtml().crearReporte("reportes/reporte_errores.html",
                         erroresLexicos, Collections.emptyList(), Collections.emptyList());
 
@@ -421,9 +434,11 @@ public class MenuEditor extends javax.swing.JFrame {
                 for (ErrorLexico err : erroresLexicos) {
                     sb.append("• ").append(err.toString()).append("\n");
                 }
-                mostrarPestanaTerminal(sb.toString());
+                actualizarPestanaTerminal(sb.toString(), false);
+
+                seleccionarPestanaApropiada(pestanaSeleccionadaPrevia, "Errores Reportados");
                 Configuraciones.pantallaDeError("Error Léxico",
-                        "Se detectaron errores léxicos en el código.\nConsulte la pestaña 'Terminal' y 'Errores Reportados'.");
+                        "Se detectaron errores léxicos en el código.\nConsulte las pestañas 'Errores Reportados', 'AST', 'Lenguaje Promptzal' o 'Terminal'.");
                 return;
             }
 
@@ -432,9 +447,18 @@ public class MenuEditor extends javax.swing.JFrame {
 
             if (ast == null || parser.tieneErrores()) {
                 List<ErrorSintactico> listaErrores = parser.getErrores();
-                mostrarPestanaErrores(Collections.emptyList(), listaErrores, Collections.emptyList());
+                List<String> detalles = new ArrayList<>();
+                for (ErrorSintactico err : listaErrores) {
+                    detalles.add(err.toString());
+                }
 
-                // Generar reporte HTML de errores
+                actualizarPestanaErrores(Collections.emptyList(), listaErrores, Collections.emptyList(), false);
+                actualizarPestanaASTError("Sintáctica", detalles, ast, false);
+                String msgPrompt = generarMensajeErrorPromptzal("Sintáctica", detalles);
+                actualizarPestanaPromptzal(msgPrompt, false);
+                BibliotecaGeneradorPromptZal.guardarPromptEnArchivo("salidas/prompt_final.txt", msgPrompt);
+                BibliotecaGeneradorPromptZal.guardarPromptEnArchivo("salidas/prompt_final.md", msgPrompt);
+
                 new ReporteErroresHtml().crearReporte("reportes/reporte_errores.html",
                         erroresLexicos, listaErrores, Collections.emptyList());
 
@@ -445,9 +469,11 @@ public class MenuEditor extends javax.swing.JFrame {
                 for (ErrorSintactico err : listaErrores) {
                     sb.append("• ").append(err.toString()).append("\n");
                 }
-                mostrarPestanaTerminal(sb.toString());
+                actualizarPestanaTerminal(sb.toString(), false);
+
+                seleccionarPestanaApropiada(pestanaSeleccionadaPrevia, "Errores Reportados");
                 Configuraciones.pantallaDeError("Error Sintáctico",
-                        "Se detectaron errores sintácticos en el código.\nConsulte la pestaña 'Terminal' y 'Errores Reportados'.");
+                        "Se detectaron errores sintácticos en el código.\nConsulte las pestañas 'Errores Reportados', 'AST', 'Lenguaje Promptzal' o 'Terminal'.");
                 return;
             }
 
@@ -457,9 +483,18 @@ public class MenuEditor extends javax.swing.JFrame {
 
             if (!semanticaValida) {
                 List<ErrorSemantico> erroresSem = semantico.getErrores();
-                mostrarPestanaErrores(Collections.emptyList(), Collections.emptyList(), erroresSem);
+                List<String> detalles = new ArrayList<>();
+                for (ErrorSemantico err : erroresSem) {
+                    detalles.add(err.toString());
+                }
 
-                // Generar reporte HTML de errores
+                actualizarPestanaErrores(Collections.emptyList(), Collections.emptyList(), erroresSem, false);
+                actualizarPestanaASTError("Semántica", detalles, ast, false);
+                String msgPrompt = generarMensajeErrorPromptzal("Semántica", detalles);
+                actualizarPestanaPromptzal(msgPrompt, false);
+                BibliotecaGeneradorPromptZal.guardarPromptEnArchivo("salidas/prompt_final.txt", msgPrompt);
+                BibliotecaGeneradorPromptZal.guardarPromptEnArchivo("salidas/prompt_final.md", msgPrompt);
+
                 new ReporteErroresHtml().crearReporte("reportes/reporte_errores.html",
                         erroresLexicos, Collections.emptyList(), erroresSem);
 
@@ -470,24 +505,24 @@ public class MenuEditor extends javax.swing.JFrame {
                 for (ErrorSemantico err : erroresSem) {
                     sb.append("• ").append(err.toString()).append("\n");
                 }
-                mostrarPestanaTerminal(sb.toString());
+                actualizarPestanaTerminal(sb.toString(), false);
+
+                seleccionarPestanaApropiada(pestanaSeleccionadaPrevia, "Errores Reportados");
                 Configuraciones.pantallaDeError("Error Semántico",
-                        "Se detectaron " + erroresSem.size() + " error(es) semántico(s) en el código.\nConsulte la pestaña 'Terminal' y 'Errores Reportados'.");
+                        "Se detectaron " + erroresSem.size() + " error(es) semántico(s) en el código.\nConsulte las pestañas 'Errores Reportados', 'AST', 'Lenguaje Promptzal' o 'Terminal'.");
                 return;
             }
 
             // COMPILACIÓN COMPLETA EXITOSA (Léxico, Sintáctico y Semántico)
-            mostrarPestanaErrores(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
+            actualizarPestanaErrores(Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), false);
 
             String promptFinal = BibliotecaGeneradorPromptZal.generarPromptFinal(
                     ast, semantico.getTablaDeSimbolos(), semantico.getAgentesEjecutados());
-            mostrarPestanaPromptzal(promptFinal);
+            actualizarPestanaPromptzal(promptFinal, false);
 
-            // Guardar prompt generado en archivos físicos (.txt y .md según PDF)
             BibliotecaGeneradorPromptZal.guardarPromptEnArchivo("salidas/prompt_final.txt", promptFinal);
             BibliotecaGeneradorPromptZal.guardarPromptEnArchivo("salidas/prompt_final.md", promptFinal);
 
-            // Generar los 3 reportes obligatorios del sistema
             new ReporteErroresHtml().crearReporte("reportes/reporte_errores.html",
                     Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
             new ReporteTablaSimbolosHtml().crearReporte("reportes/tabla_simbolos.html",
@@ -495,10 +530,8 @@ public class MenuEditor extends javax.swing.JFrame {
             new ReporteASTHtml().crearReporte("reportes/ast.html", ast);
             ReporteASTHtml.guardarDotEnArchivo("reportes/ast.dot", ast);
 
-            // Actualizar pestaña visual del AST en el IDE
-            mostrarPestanaAST(ast);
+            actualizarPestanaAST(ast, false);
 
-            // Notificación en la Terminal de compilación exitosa
             StringBuilder sbExito = new StringBuilder();
             sbExito.append("====================================================\n");
             sbExito.append("   COMPILACIÓN EXITOSA - PROMPTZAL GENERADO\n");
@@ -509,11 +542,17 @@ public class MenuEditor extends javax.swing.JFrame {
             sbExito.append("• Agentes ejecutados: ").append(semantico.getAgentesEjecutados().size()).append("\n");
             sbExito.append("• Salida guardada en: salidas/prompt_final.txt y salidas/prompt_final.md\n");
             sbExito.append("• Reportes HTML generados en carpeta: reportes/\n");
-            mostrarPestanaTerminal(sbExito.toString());
+            actualizarPestanaTerminal(sbExito.toString(), false);
+
+            seleccionarPestanaApropiada(pestanaSeleccionadaPrevia, "Lenguaje Promptzal");
 
             Configuraciones.mensajeSi("Compilación Exitosa",
                     "¡Código validado léxica, sintáctica y semánticamente con éxito!\nPromptZal generado y reportes exportados correctamente.");
         } catch (Exception e) {
+            List<String> errEx = Collections.singletonList("Excepción durante el proceso: " + e.getMessage());
+            actualizarPestanaASTError("Excepción", errEx, null, false);
+            actualizarPestanaPromptzal(generarMensajeErrorPromptzal("Excepción", errEx), false);
+            actualizarPestanaTerminal("Error crítico durante la compilación:\n" + e.getMessage(), false);
             Configuraciones.pantallaDeError("Error", "Error durante el análisis: " + e.getMessage());
             e.printStackTrace();
         }
@@ -628,6 +667,47 @@ public class MenuEditor extends javax.swing.JFrame {
         }
     }// GEN-LAST:event_reportesHtmlActionPerformed
 
+    private String generarMensajeErrorPromptzal(String fase, List<String> detallesErrores) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("======================================================================\n");
+        sb.append("   ❌ ERROR DE COMPILACIÓN - PROMPTZAL NO GENERADO\n");
+        sb.append("======================================================================\n\n");
+        sb.append("Fase con error: ").append(fase.toUpperCase()).append("\n");
+        sb.append("Total de errores detectados: ").append(detallesErrores != null ? detallesErrores.size() : 0).append("\n\n");
+        sb.append("El prompt final no pudo ser generado debido a los siguientes errores:\n");
+        sb.append("----------------------------------------------------------------------\n");
+        if (detallesErrores != null && !detallesErrores.isEmpty()) {
+            for (String err : detallesErrores) {
+                sb.append("• ").append(err).append("\n");
+            }
+        } else {
+            sb.append("• Error general durante el análisis del código.\n");
+        }
+        sb.append("----------------------------------------------------------------------\n");
+        sb.append("Acciones sugeridas:\n");
+        sb.append("1. Revise los detalles en la pestaña 'Errores Reportados' o 'Terminal'.\n");
+        sb.append("2. Corrija los errores en el editor de código.\n");
+        sb.append("3. Vuelva a presionar 'Copilar' para generar el PromptZal.\n");
+        sb.append("======================================================================\n");
+        return sb.toString();
+    }
+
+    private void seleccionarPestanaApropiada(int indexPrevio, String pestanaPorDefecto) {
+        if (indexPrevio >= 0 && indexPrevio < jTabbleDeOpciones.getTabCount()) {
+            jTabbleDeOpciones.setSelectedIndex(indexPrevio);
+        } else {
+            for (int i = 0; i < jTabbleDeOpciones.getTabCount(); i++) {
+                if (jTabbleDeOpciones.getTitleAt(i).trim().equalsIgnoreCase(pestanaPorDefecto.trim())) {
+                    jTabbleDeOpciones.setSelectedIndex(i);
+                    return;
+                }
+            }
+            if (jTabbleDeOpciones.getTabCount() > 0) {
+                jTabbleDeOpciones.setSelectedIndex(0);
+            }
+        }
+    }
+
     private void promptzalActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_promptzalActionPerformed
         mostrarPestanaPromptzal(null);
     }// GEN-LAST:event_promptzalActionPerformed
@@ -637,6 +717,10 @@ public class MenuEditor extends javax.swing.JFrame {
     }// GEN-LAST:event_erroresActionPerformed
 
     public void mostrarPestanaPromptzal(String texto) {
+        actualizarPestanaPromptzal(texto, true);
+    }
+
+    public void actualizarPestanaPromptzal(String texto, boolean cambiarFoco) {
         int indexExistente = -1;
         for (int i = 0; i < jTabbleDeOpciones.getTabCount(); i++) {
             if (jTabbleDeOpciones.getTitleAt(i).trim().equals("Lenguaje Promptzal")) {
@@ -650,7 +734,9 @@ public class MenuEditor extends javax.swing.JFrame {
             if (texto != null) {
                 panelActual.actualizarContenido(texto);
             }
-            jTabbleDeOpciones.setSelectedIndex(indexExistente);
+            if (cambiarFoco) {
+                jTabbleDeOpciones.setSelectedIndex(indexExistente);
+            }
         } else {
             if (lenguajePromptzalPanel == null) {
                 lenguajePromptzalPanel = new PromptZal(texto != null ? texto : "# Prompt generado con PromptZal\n// Presione 'Copilar' para generar el prompt a partir del código fuente.\n");
@@ -658,7 +744,9 @@ public class MenuEditor extends javax.swing.JFrame {
                 lenguajePromptzalPanel.actualizarContenido(texto);
             }
             jTabbleDeOpciones.addTab("Lenguaje Promptzal", lenguajePromptzalPanel);
-            jTabbleDeOpciones.setSelectedIndex(jTabbleDeOpciones.getTabCount() - 1);
+            if (cambiarFoco) {
+                jTabbleDeOpciones.setSelectedIndex(jTabbleDeOpciones.getTabCount() - 1);
+            }
         }
     }
 
@@ -667,6 +755,10 @@ public class MenuEditor extends javax.swing.JFrame {
     }
 
     public void mostrarPestanaTerminal(String texto) {
+        actualizarPestanaTerminal(texto, true);
+    }
+
+    public void actualizarPestanaTerminal(String texto, boolean cambiarFoco) {
         int indexExistente = -1;
         for (int i = 0; i < jTabbleDeOpciones.getTabCount(); i++) {
             if (jTabbleDeOpciones.getTitleAt(i).trim().equalsIgnoreCase("Terminal")) {
@@ -678,17 +770,21 @@ public class MenuEditor extends javax.swing.JFrame {
         if (indexExistente != -1) {
             TerminalPanel panelActual = (TerminalPanel) jTabbleDeOpciones.getComponentAt(indexExistente);
             if (texto != null && !texto.trim().isEmpty()) {
-                panelActual.imprimir(texto);
+                panelActual.establecerTexto(texto);
             }
-            jTabbleDeOpciones.setSelectedIndex(indexExistente);
+            if (cambiarFoco) {
+                jTabbleDeOpciones.setSelectedIndex(indexExistente);
+            }
         } else {
             if (terminalPanel == null) {
                 terminalPanel = new TerminalPanel(texto);
             } else if (texto != null && !texto.trim().isEmpty()) {
-                terminalPanel.imprimir(texto);
+                terminalPanel.establecerTexto(texto);
             }
             jTabbleDeOpciones.addTab("Terminal", terminalPanel);
-            jTabbleDeOpciones.setSelectedIndex(jTabbleDeOpciones.getTabCount() - 1);
+            if (cambiarFoco) {
+                jTabbleDeOpciones.setSelectedIndex(jTabbleDeOpciones.getTabCount() - 1);
+            }
         }
     }
 
@@ -701,6 +797,10 @@ public class MenuEditor extends javax.swing.JFrame {
     }
 
     public void mostrarPestanaErrores(List<ErrorLexico> erroresLexicos, List<ErrorSintactico> listaSintacticos, List<ErrorSemantico> listaSemanticos) {
+        actualizarPestanaErrores(erroresLexicos, listaSintacticos, listaSemanticos, true);
+    }
+
+    public void actualizarPestanaErrores(List<ErrorLexico> erroresLexicos, List<ErrorSintactico> listaSintacticos, List<ErrorSemantico> listaSemanticos, boolean cambiarFoco) {
         int indexExistente = -1;
         for (int i = 0; i < jTabbleDeOpciones.getTabCount(); i++) {
             if (jTabbleDeOpciones.getTitleAt(i).trim().equals("Errores Reportados")) {
@@ -709,17 +809,20 @@ public class MenuEditor extends javax.swing.JFrame {
             }
         }
 
-        if (indexExistente != -1) {
-            errores panelActual = (errores) jTabbleDeOpciones.getComponentAt(indexExistente);
-            panelActual.cargarTodosLosErrores(erroresLexicos, listaSintacticos, listaSemanticos);
-            jTabbleDeOpciones.setSelectedIndex(indexExistente);
-        } else {
-            if (erroresPanel == null) {
-                erroresPanel = new errores();
-            }
+        if (erroresPanel == null) {
+            erroresPanel = new errores();
+        }
+        if (erroresLexicos != null || listaSintacticos != null || listaSemanticos != null) {
             erroresPanel.cargarTodosLosErrores(erroresLexicos, listaSintacticos, listaSemanticos);
+        }
+
+        if (indexExistente == -1) {
             jTabbleDeOpciones.addTab("Errores Reportados", erroresPanel);
-            jTabbleDeOpciones.setSelectedIndex(jTabbleDeOpciones.getTabCount() - 1);
+            indexExistente = jTabbleDeOpciones.getTabCount() - 1;
+        }
+
+        if (cambiarFoco) {
+            jTabbleDeOpciones.setSelectedIndex(indexExistente);
         }
     }
 
@@ -728,6 +831,10 @@ public class MenuEditor extends javax.swing.JFrame {
     }// GEN-LAST:event_astActionPerformed
 
     public void mostrarPestanaAST(NodoPrograma arbol) {
+        actualizarPestanaAST(arbol, true);
+    }
+
+    public void actualizarPestanaAST(NodoPrograma arbol, boolean cambiarFoco) {
         int indexExistente = -1;
         for (int i = 0; i < jTabbleDeOpciones.getTabCount(); i++) {
             if (jTabbleDeOpciones.getTitleAt(i).trim().equals("AST")) {
@@ -736,21 +843,46 @@ public class MenuEditor extends javax.swing.JFrame {
             }
         }
 
-        if (indexExistente != -1) {
-            ast panelActual = (ast) jTabbleDeOpciones.getComponentAt(indexExistente);
-            if (arbol != null) {
-                panelActual.cargarAST(arbol);
-            }
-            jTabbleDeOpciones.setSelectedIndex(indexExistente);
-        } else {
-            if (astPanel == null) {
-                astPanel = new ast();
-            }
+        if (astPanel == null) {
+            astPanel = new ast();
             if (arbol != null) {
                 astPanel.cargarAST(arbol);
             }
+        } else if (arbol != null) {
+            astPanel.cargarAST(arbol);
+        }
+
+        if (indexExistente == -1) {
             jTabbleDeOpciones.addTab("AST", astPanel);
-            jTabbleDeOpciones.setSelectedIndex(jTabbleDeOpciones.getTabCount() - 1);
+            indexExistente = jTabbleDeOpciones.getTabCount() - 1;
+        }
+
+        if (cambiarFoco) {
+            jTabbleDeOpciones.setSelectedIndex(indexExistente);
+        }
+    }
+
+    public void actualizarPestanaASTError(String tipoError, List<String> errores, NodoPrograma arbolParcial, boolean cambiarFoco) {
+        int indexExistente = -1;
+        for (int i = 0; i < jTabbleDeOpciones.getTabCount(); i++) {
+            if (jTabbleDeOpciones.getTitleAt(i).trim().equals("AST")) {
+                indexExistente = i;
+                break;
+            }
+        }
+
+        if (astPanel == null) {
+            astPanel = new ast();
+        }
+        astPanel.cargarErrorAST(tipoError, errores, arbolParcial);
+
+        if (indexExistente == -1) {
+            jTabbleDeOpciones.addTab("AST", astPanel);
+            indexExistente = jTabbleDeOpciones.getTabCount() - 1;
+        }
+
+        if (cambiarFoco) {
+            jTabbleDeOpciones.setSelectedIndex(indexExistente);
         }
     }
 

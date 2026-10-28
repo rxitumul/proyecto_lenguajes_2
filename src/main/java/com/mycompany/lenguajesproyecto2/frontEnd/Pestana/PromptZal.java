@@ -30,6 +30,7 @@ public class PromptZal extends javax.swing.JPanel {
 
     public void actualizarContenido(String texto) {
         jTextArea1.setText(texto);
+        jTextArea1.setCaretPosition(0);
     }
 
     private void agregarBotonGuardar() {

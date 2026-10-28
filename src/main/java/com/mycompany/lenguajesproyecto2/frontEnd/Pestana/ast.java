@@ -36,6 +36,50 @@ public class ast extends javax.swing.JPanel {
         jLabel1.setText(htmlFormatted);
     }
 
+    public void cargarErrorAST(String tipoError, java.util.List<String> errores, com.mycompany.lenguajesproyecto2.BackEnd.Semantico.AST.NodoPrograma arbolParcial) {
+        StringBuilder html = new StringBuilder();
+        html.append("<html><body style='background-color:#0d1117; color:#f85149; font-family:monospace; padding:20px; font-size:12px;'>");
+
+        html.append("<div style='background-color:#211417; border:2px solid #da3633; border-radius:8px; padding:16px; margin-bottom:16px;'>");
+        html.append("<div style='color:#ff7b72; font-weight:bold; font-size:16px; margin-bottom:8px;'>")
+            .append("❌ ERROR EN LA GENERACIÓN DEL AST (Fase ").append(tipoError != null ? tipoError.toUpperCase() : "ANÁLISIS").append(")")
+            .append("</div>");
+
+        html.append("<div style='color:#c9d1d9; font-size:13px; margin-bottom:10px;'>")
+            .append("Se encontraron errores durante la compilación que impiden generar el AST definitivo:")
+            .append("</div>");
+
+        html.append("<ul style='color:#ffa198; margin:0; padding-left:20px; font-size:12px; line-height:1.5;'>");
+        if (errores != null && !errores.isEmpty()) {
+            for (String err : errores) {
+                html.append("<li>")
+                    .append(err.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+                    .append("</li>");
+            }
+        } else {
+            html.append("<li>No se pudo completar la construcción del árbol debido a errores en el código fuente.</li>");
+        }
+        html.append("</ul>");
+        html.append("</div>");
+
+        if (arbolParcial != null) {
+            String arbolTexto = com.mycompany.lenguajesproyecto2.BackEnd.Reportes.ReporteASTHtml.generarArbolTexto(arbolParcial);
+            html.append("<div style='color:#58a6ff; font-weight:bold; font-size:14px; margin-top:16px; margin-bottom:8px;'>")
+                .append("ÁRBOL SINTÁCTICO GENERADO (Previo a errores semánticos):")
+                .append("</div>");
+            html.append("<div style='background-color:#161b22; color:#7ee787; border:1px solid #30363d; border-radius:6px; padding:12px; font-size:12px; white-space:pre;'>")
+                .append(arbolTexto.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br/>"))
+                .append("</div>");
+        } else {
+            html.append("<div style='color:#8b949e; font-size:12px; font-style:italic;'>")
+                .append("ℹ️ El Árbol de Sintaxis Abstracta no pudo ser construido debido a los errores detectados arriba. Corrija los errores y vuelva a compilar.")
+                .append("</div>");
+        }
+
+        html.append("</body></html>");
+        jLabel1.setText(html.toString());
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

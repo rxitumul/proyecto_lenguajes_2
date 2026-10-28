@@ -239,20 +239,21 @@
   <div class="section-title"><span>🌳</span> Representación en Texto con Sangrías Jerárquicas</div>
   <div class="code-block">NodoPrograma [Fila: 1, Col: 1]
 ├── Directivas (3)
-│   ├── @modelo = "gemini-1.5-flash" [Fila: 1, Col: 1]
-│   ├── @rol = "asistente de programacion" [Fila: 2, Col: 1]
+│   ├── @modelo = "claude-sonnet-4-6" [Fila: 1, Col: 1]
+│   ├── @rol = "analista de datos" [Fila: 2, Col: 1]
 │   └── @formato = "markdown" [Fila: 3, Col: 1]
 ├── Agentes (1)
-│   └── AGENTE: desarrollador [Fila: 9, Col: 1]
-│       ├── Contexto = "Eres un experto en refactorización de código Java"
+│   └── AGENTE: analista [Fila: 6, Col: 1]
+│       ├── Contexto = "Eres un analista de datos experto"
 │       ├── Variables (1)
-│       │   └── codigoSucio = "public void test() { int a = 1; }" [Fila: 11, Col: 1]
-│       └── Comandos (1)
-│           └── ANALIZAR codigoSucio EN "estilo limpio y buenas practicas" -&gt; codigoLimpio [Fila: 12, Col: 1]
+│       │   └── ventas = CARGAR("ventas.csv") [Fila: 8, Col: 5]
+│       └── Comandos (2)
+│           ├── PREGUNTAR "Cuales son las 3 tendencias principales?" SOBRE ventas -&gt; tendencias [Fila: 9, Col: 5]
+│           └── RESUMIR tendencias EN 100 palabras -&gt; resumen [Fila: 10, Col: 5]
 ├── Ejecuciones (1)
-│   └── EJECUTAR desarrollador [Fila: 15, Col: 10]
-└── Exportar [Fila: 16, Col: 1]
-    └── codigoLimpio [Fila: 16, Col: 10]
+│   └── EJECUTAR analista [Fila: 13, Col: 10]
+└── Exportar [Fila: 14, Col: 1]
+    └── resumen [Fila: 14, Col: 10]
 </div>
   <div class="section-title"><span>📊</span> Definición en Graphviz DOT (Graficable)</div>
   <div class="code-block dot-block">digraph AST_PromptZal {
@@ -264,38 +265,40 @@
   node_1 [label="Programa\nPromptZal", fillcolor="#1f6feb", shape=ellipse];
   node_2 [label="Directivas", fillcolor="#238636"];
   node_1 -&gt; node_2;
-  node_3 [label="@modelo\n\"gemini-1.5-flash\"", fillcolor="#2ea043"];
+  node_3 [label="@modelo\n\"claude-sonnet-4-6\"", fillcolor="#2ea043"];
   node_2 -&gt; node_3;
-  node_4 [label="@rol\n\"asistente de programacion\"", fillcolor="#2ea043"];
+  node_4 [label="@rol\n\"analista de datos\"", fillcolor="#2ea043"];
   node_2 -&gt; node_4;
   node_5 [label="@formato\n\"markdown\"", fillcolor="#2ea043"];
   node_2 -&gt; node_5;
   node_6 [label="Agentes", fillcolor="#8957e5"];
   node_1 -&gt; node_6;
-  node_7 [label="AGENTE: desarrollador", fillcolor="#a371f7"];
+  node_7 [label="AGENTE: analista", fillcolor="#a371f7"];
   node_6 -&gt; node_7;
-  node_8 [label="contexto = \"\"Eres un experto en refactorización de código Java\"\"", fillcolor="#30363d", fontcolor="#c9d1d9"];
+  node_8 [label="contexto = \"\"Eres un analista de datos experto\"\"", fillcolor="#30363d", fontcolor="#c9d1d9"];
   node_7 -&gt; node_8;
   node_9 [label="Variables", fillcolor="#238636"];
   node_7 -&gt; node_9;
-  node_10 [label="codigoSucio = \"public void test() { int a = 1; }\"", fillcolor="#2ea043"];
+  node_10 [label="ventas = CARGAR(\"ventas.csv\")", fillcolor="#2ea043"];
   node_9 -&gt; node_10;
   node_11 [label="Comandos IA", fillcolor="#d29922"];
   node_7 -&gt; node_11;
-  node_12 [label="ANALIZAR codigoSucio EN \"estilo limpio y buenas practicas\" -&gt; codigoLimpio", fillcolor="#e3b341", fontcolor="#000000"];
+  node_12 [label="PREGUNTAR \"Cuales son las 3 tendencias principales?\" SOBRE ventas -&gt; tendencias", fillcolor="#e3b341", fontcolor="#000000"];
   node_11 -&gt; node_12;
-  node_13 [label="Ejecuciones", fillcolor="#da3633"];
-  node_1 -&gt; node_13;
-  node_14 [label="EJECUTAR desarrollador", fillcolor="#f85149"];
-  node_13 -&gt; node_14;
-  node_15 [label="Exportar", fillcolor="#1f6feb"];
-  node_1 -&gt; node_15;
-  node_16 [label="codigoLimpio", fillcolor="#388bfd"];
-  node_15 -&gt; node_16;
+  node_13 [label="RESUMIR tendencias EN 100 palabras -&gt; resumen", fillcolor="#e3b341", fontcolor="#000000"];
+  node_11 -&gt; node_13;
+  node_14 [label="Ejecuciones", fillcolor="#da3633"];
+  node_1 -&gt; node_14;
+  node_15 [label="EJECUTAR analista", fillcolor="#f85149"];
+  node_14 -&gt; node_15;
+  node_16 [label="Exportar", fillcolor="#1f6feb"];
+  node_1 -&gt; node_16;
+  node_17 [label="resumen", fillcolor="#388bfd"];
+  node_16 -&gt; node_17;
 }
 </div>
   <div class="footer">
-    Generado automáticamente por el compilador PromptZal • 27/10/2026 19:57:32
+    Generado automáticamente por el compilador PromptZal • 28/10/2026 01:40:06
   </div>
 </div>
 </body>

@@ -1,54 +1,333 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
- <meta charset="UTF-8">
-<title>Reporte de Tokens</title>
-<style>
-  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d1117; color: #c9d1d9; margin: 0; padding: 30px; }
-  .container { max-width: 1100px; margin: auto; background: #161b22; padding: 25px; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); border: 1px solid #30363d; }
-  h1 { color: #58a6ff; border-bottom: 2px solid #30363d; padding-bottom: 10px; margin-top: 0; font-size: 24px; }
-  table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
-  th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #30363d; }
-  th { background-color: #1f6feb; color: #ffffff; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
-  td { color: #b1bac4; }
-  tr:hover { background-color: #21262d; }
-  .no-data { padding: 20px; background-color: #0f2b1d; color: #3fb950; border-left: 4px solid #2ea043; border-radius: 4px; font-weight: 500; margin-top: 20px; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PromptZal - Reporte de Tokens</title>
+  <style>
+  :root {
+    --bg-dark: #0d1117;
+    --bg-card: #161b22;
+    --bg-hover: #1f242c;
+    --border-color: #30363d;
+    --text-main: #c9d1d9;
+    --text-muted: #8b949e;
+    --accent-blue: #58a6ff;
+    --accent-green: #3fb950;
+    --accent-purple: #bc8cff;
+    --accent-orange: #d29922;
+    --accent-red: #f85149;
+    --accent-cyan: #39c5cf;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    margin: 0;
+    padding: 30px 20px;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+  .header {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+  }
+  h1 {
+    color: var(--accent-blue);
+    margin: 0 0 10px 0;
+    font-size: 26px;
+  }
+  p.sub {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 14px;
+  }
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+  .stat-card {
+    background: #0d1117;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px 20px;
+  }
+  .stat-card .val {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .stat-card .lbl {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+  }
+  .stat-total .val { color: var(--accent-blue); }
+  .stat-error .val { color: var(--accent-red); }
+  .stat-agentes .val { color: var(--accent-purple); }
+  .stat-vars .val { color: var(--accent-green); }
+  .stat-dirs .val { color: var(--accent-cyan); }
+  .stat-lex .val { color: var(--accent-orange); }
+  .stat-sin .val { color: var(--accent-purple); }
+  .stat-sem .val { color: #f0883e; }
+
+  .charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 25px 0;
+  }
+  @media (max-width: 800px) {
+    .charts-row { grid-template-columns: 1fr; }
+  }
+  .chart-card {
+    background: #0d1117;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .chart-card h3 {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .chart-wrapper {
+    position: relative;
+    height: 230px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 15px;
+  }
+  th, td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+  }
+  th {
+    background: #21262d;
+    color: #f0f6fc;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+  tr:hover {
+    background: var(--bg-hover);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-lexico, .badge-lex { background: rgba(210, 153, 34, 0.2); color: var(--accent-orange); border: 1px solid rgba(210, 153, 34, 0.4); }
+  .badge-sintactico, .badge-sin { background: rgba(188, 140, 255, 0.2); color: var(--accent-purple); border: 1px solid rgba(188, 140, 255, 0.4); }
+  .badge-semantico, .badge-sem { background: rgba(240, 136, 62, 0.2); color: #f0883e; border: 1px solid rgba(240, 136, 62, 0.4); }
+  .badge-agente { background: rgba(188, 140, 255, 0.2); color: var(--accent-purple); border: 1px solid rgba(188, 140, 255, 0.4); }
+  .badge-variable { background: rgba(63, 185, 80, 0.2); color: var(--accent-green); border: 1px solid rgba(63, 185, 80, 0.4); }
+  .badge-directiva { background: rgba(57, 197, 207, 0.2); color: var(--accent-cyan); border: 1px solid rgba(57, 197, 207, 0.4); }
+  .badge-token { background: rgba(88, 166, 255, 0.2); color: var(--accent-blue); border: 1px solid rgba(88, 166, 255, 0.4); }
+  .badge-global { background: rgba(88, 166, 255, 0.15); color: var(--accent-blue); padding: 3px 8px; border-radius: 4px; font-size: 11px; }
+  .badge-local { background: rgba(210, 153, 34, 0.15); color: var(--accent-orange); padding: 3px 8px; border-radius: 4px; font-size: 11px; }
+
+  .code-id, .code-pill {
+    font-family: 'Consolas', 'Courier New', monospace;
+    background: #0d1117;
+    border: 1px solid var(--border-color);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  .val-cell {
+    font-family: 'Consolas', 'Courier New', monospace;
+    color: var(--text-muted);
+    max-width: 350px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .empty-box {
+    background: #0d1117;
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+  .success-box {
+    background: rgba(63, 185, 80, 0.1);
+    border: 1px solid var(--accent-green);
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    color: var(--accent-green);
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 20px;
+  }
+  .section-title {
+    color: #f0f6fc;
+    font-size: 18px;
+    margin: 30px 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .code-block {
+    background: #0d1117;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #7ee787;
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .dot-block { color: #a5d6ff; }
+
+  .no-data, .no-errors {
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin: 20px 0;
+    background: rgba(63, 185, 80, 0.1);
+    border: 1px solid rgba(63, 185, 80, 0.3);
+    color: var(--accent-green);
+  }
+  .no-errors h2, .no-data h2 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+  }
+
+  .footer {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: right;
+  }
+  </style>
 </head>
 <body>
 <div class="container">
-<h1>Reporte de Tokens</h1>
-<table>
-<tr><th>#</th><th>Lexema / Carácter</th><th>Tipo</th><th>Descripción</th><th>Fila</th><th>Columna</th></tr>
-<tr><td>1</td><td>@modelo</td><td>DIRECTIVA</td><td>Indica la herramienta o modelo de IA (ej. 'claude-3-5', 'gpt-4').</td><td>1</td><td>1</td></tr>
-<tr><td>2</td><td>"gpt-4o"</td><td>CADENA</td><td>Token no reconocido</td><td>1</td><td>9</td></tr>
-<tr><td>3</td><td>@rol</td><td>DIRECTIVA</td><td>Define el rol general que asumirá la IA en el encabezado del prompt.</td><td>2</td><td>1</td></tr>
-<tr><td>4</td><td>"traductor profesional"</td><td>CADENA</td><td>Token no reconocido</td><td>2</td><td>6</td></tr>
-<tr><td>5</td><td>@formato</td><td>DIRECTIVA</td><td>Indica el formato de salida deseado (ej. 'json', 'markdown', 'lista').</td><td>3</td><td>1</td></tr>
-<tr><td>6</td><td>"texto plano"</td><td>CADENA</td><td>Token no reconocido</td><td>3</td><td>10</td></tr>
-<tr><td>7</td><td>AGENTE</td><td>PALABRA_RESERVADA</td><td>Declara un agente: la unidad que agrupa contexto, variables y comandos.</td><td>6</td><td>1</td></tr>
-<tr><td>8</td><td>traductor</td><td>ID</td><td>Token no reconocido</td><td>6</td><td>8</td></tr>
-<tr><td>9</td><td>{</td><td>OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</td><td>Llave de apertura de bloque.</td><td>6</td><td>18</td></tr>
-<tr><td>10</td><td>contexto</td><td>PALABRA_RESERVADA</td><td>Define el rol que asumirá la IA dentro del agente.</td><td>7</td><td>1</td></tr>
-<tr><td>11</td><td>=</td><td>OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</td><td>Operador de asignación.</td><td>7</td><td>10</td></tr>
-<tr><td>12</td><td>"Eres un traductor experto de inglés a español"</td><td>CADENA</td><td>Token no reconocido</td><td>7</td><td>12</td></tr>
-<tr><td>13</td><td>variable</td><td>PALABRA_RESERVADA</td><td>Declara una variable que almacena un valor o el resultado de un comando.</td><td>8</td><td>1</td></tr>
-<tr><td>14</td><td>textoOriginal</td><td>ID</td><td>Token no reconocido</td><td>8</td><td>10</td></tr>
-<tr><td>15</td><td>=</td><td>OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</td><td>Operador de asignación.</td><td>8</td><td>24</td></tr>
-<tr><td>16</td><td>"Hello, welcome to our application."</td><td>CADENA</td><td>Token no reconocido</td><td>8</td><td>26</td></tr>
-<tr><td>17</td><td>TRADUCIR</td><td>COMANDO_IA</td><td>Traduce un contenido a otro idioma o formato.</td><td>9</td><td>1</td></tr>
-<tr><td>18</td><td>textoOriginal</td><td>ID</td><td>Token no reconocido</td><td>9</td><td>10</td></tr>
-<tr><td>19</td><td>COMO</td><td>CONECTORES</td><td>Indica el formato o rol de salida deseado.</td><td>9</td><td>24</td></tr>
-<tr><td>20</td><td>"español neutro"</td><td>CADENA</td><td>Token no reconocido</td><td>9</td><td>29</td></tr>
-<tr><td>21</td><td>-></td><td>CONECTORES</td><td>Asigna el resultado del comando a una variable.</td><td>9</td><td>46</td></tr>
-<tr><td>22</td><td>textoTraducido</td><td>ID</td><td>Token no reconocido</td><td>9</td><td>49</td></tr>
-<tr><td>23</td><td>}</td><td>OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</td><td>Llave de cierre de bloque.</td><td>10</td><td>1</td></tr>
-<tr><td>24</td><td>EJECUTAR</td><td>PALABRA_RESERVADA</td><td>Corre un agente previamente definido.</td><td>12</td><td>1</td></tr>
-<tr><td>25</td><td>traductor</td><td>ID</td><td>Token no reconocido</td><td>12</td><td>10</td></tr>
-<tr><td>26</td><td>EXPORTAR</td><td>PALABRA_RESERVADA</td><td>Indica qué resultados se incluyen en el prompt final.</td><td>13</td><td>1</td></tr>
-<tr><td>27</td><td>textoTraducido</td><td>ID</td><td>Token no reconocido</td><td>13</td><td>10</td></tr>
-</table>
-</body>
-</html></div>
+  <div class="header">
+    <h1>Reporte de Tokens</h1>
+    <p class="sub">Listado de todos los componentes léxicos identificados durante la lectura.</p>
+  </div>
+  <div class="stats-container">
+    <div class="stat-card stat-total">
+      <div class="val">70</div>
+      <div class="lbl">Total Tokens Procesados</div>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Lexema / Carácter</th><th>Tipo</th><th>Descripción</th><th>Fila</th><th>Columna</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><span class="code-id">@modelo</span></td><td><span class="badge badge-token">DIRECTIVA</span></td><td>Indica la herramienta o modelo de IA (ej. 'claude-3-5', 'gpt-4').</td><td>1</td><td>1</td></tr>
+      <tr><td>2</td><td><span class="code-id">"claude-sonnet-4-6"</span></td><td><span class="badge badge-token">CADENA</span></td><td>Token no reconocido</td><td>1</td><td>9</td></tr>
+      <tr><td>3</td><td><span class="code-id">@rol</span></td><td><span class="badge badge-token">DIRECTIVA</span></td><td>Define el rol general que asumirá la IA en el encabezado del prompt.</td><td>2</td><td>1</td></tr>
+      <tr><td>4</td><td><span class="code-id">"asistente de analisis"</span></td><td><span class="badge badge-token">CADENA</span></td><td>Token no reconocido</td><td>2</td><td>6</td></tr>
+      <tr><td>5</td><td><span class="code-id">@formato</span></td><td><span class="badge badge-token">DIRECTIVA</span></td><td>Indica el formato de salida deseado (ej. 'json', 'markdown', 'lista').</td><td>3</td><td>1</td></tr>
+      <tr><td>6</td><td><span class="code-id">"markdown"</span></td><td><span class="badge badge-token">CADENA</span></td><td>Token no reconocido</td><td>3</td><td>10</td></tr>
+      <tr><td>7</td><td><span class="code-id">AGENTE</span></td><td><span class="badge badge-token">PALABRA_RESERVADA</span></td><td>Declara un agente: la unidad que agrupa contexto, variables y comandos.</td><td>11</td><td>1</td></tr>
+      <tr><td>8</td><td><span class="code-id">analista</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>11</td><td>8</td></tr>
+      <tr><td>9</td><td><span class="code-id">{</span></td><td><span class="badge badge-token">OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</span></td><td>Llave de apertura de bloque.</td><td>11</td><td>17</td></tr>
+      <tr><td>10</td><td><span class="code-id">contexto</span></td><td><span class="badge badge-token">PALABRA_RESERVADA</span></td><td>Define el rol que asumirá la IA dentro del agente.</td><td>12</td><td>3</td></tr>
+      <tr><td>11</td><td><span class="code-id">=</span></td><td><span class="badge badge-token">OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</span></td><td>Operador de asignación.</td><td>12</td><td>12</td></tr>
+      <tr><td>12</td><td><span class="code-id">"Eres un analista de datos"</span></td><td><span class="badge badge-token">CADENA</span></td><td>Token no reconocido</td><td>12</td><td>14</td></tr>
+      <tr><td>13</td><td><span class="code-id">variable</span></td><td><span class="badge badge-token">PALABRA_RESERVADA</span></td><td>Declara una variable que almacena un valor o el resultado de un comando.</td><td>14</td><td>3</td></tr>
+      <tr><td>14</td><td><span class="code-id">ventas</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>14</td><td>12</td></tr>
+      <tr><td>15</td><td><span class="code-id">=</span></td><td><span class="badge badge-token">OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</span></td><td>Operador de asignación.</td><td>14</td><td>19</td></tr>
+      <tr><td>16</td><td><span class="code-id">CARGAR</span></td><td><span class="badge badge-token">FUNCION_DE_SISTEMA</span></td><td>Carga el contenido de un archivo local y lo entrega como valor.</td><td>14</td><td>21</td></tr>
+      <tr><td>17</td><td><span class="code-id">(</span></td><td><span class="badge badge-token">CONECTORES</span></td><td>Paréntesis de apertura.</td><td>14</td><td>27</td></tr>
+      <tr><td>18</td><td><span class="code-id">"ventas.csv"</span></td><td><span class="badge badge-token">CADENA</span></td><td>Token no reconocido</td><td>14</td><td>28</td></tr>
+      <tr><td>19</td><td><span class="code-id">)</span></td><td><span class="badge badge-token">CONECTORES</span></td><td>Paréntesis de cierre.</td><td>14</td><td>40</td></tr>
+      <tr><td>20</td><td><span class="code-id">;</span></td><td><span class="badge badge-token">OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</span></td><td>Fin de instrucción.</td><td>14</td><td>42</td></tr>
+      <tr><td>21</td><td><span class="code-id">variable</span></td><td><span class="badge badge-token">PALABRA_RESERVADA</span></td><td>Declara una variable que almacena un valor o el resultado de un comando.</td><td>15</td><td>3</td></tr>
+      <tr><td>22</td><td><span class="code-id">meta</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>15</td><td>12</td></tr>
+      <tr><td>23</td><td><span class="code-id">=</span></td><td><span class="badge badge-token">OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</span></td><td>Operador de asignación.</td><td>15</td><td>17</td></tr>
+      <tr><td>24</td><td><span class="code-id">200</span></td><td><span class="badge badge-token">NUMERO</span></td><td>Token no reconocido</td><td>15</td><td>19</td></tr>
+      <tr><td>25</td><td><span class="code-id">PREGUNTAR</span></td><td><span class="badge badge-token">COMANDO_IA</span></td><td>Formula una pregunta a la IA sobre unos datos o contexto.</td><td>17</td><td>3</td></tr>
+      <tr><td>26</td><td><span class="code-id">"Cuales son las tendencias?"</span></td><td><span class="badge badge-token">CADENA</span></td><td>Token no reconocido</td><td>17</td><td>13</td></tr>
+      <tr><td>27</td><td><span class="code-id">SOBRE</span></td><td><span class="badge badge-token">CONECTORES</span></td><td>Indica los datos sobre los que opera un comando.</td><td>17</td><td>42</td></tr>
+      <tr><td>28</td><td><span class="code-id">ventas</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>17</td><td>48</td></tr>
+      <tr><td>29</td><td><span class="code-id">-&gt;</span></td><td><span class="badge badge-token">CONECTORES</span></td><td>Asigna el resultado del comando a una variable.</td><td>17</td><td>55</td></tr>
+      <tr><td>30</td><td><span class="code-id">tendencias</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>17</td><td>58</td></tr>
+      <tr><td>31</td><td><span class="code-id">revisar</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>17</td><td>70</td></tr>
+      <tr><td>32</td><td><span class="code-id">ANALIZAR</span></td><td><span class="badge badge-token">COMANDO_IA</span></td><td>Solicita un análisis detallado de datos bajo cierto criterio.</td><td>18</td><td>3</td></tr>
+      <tr><td>33</td><td><span class="code-id">ventas</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>18</td><td>12</td></tr>
+      <tr><td>34</td><td><span class="code-id">SOBRE</span></td><td><span class="badge badge-token">CONECTORES</span></td><td>Indica los datos sobre los que opera un comando.</td><td>18</td><td>19</td></tr>
+      <tr><td>35</td><td><span class="code-id">"margen de ganancia"</span></td><td><span class="badge badge-token">CADENA</span></td><td>Token no reconocido</td><td>18</td><td>25</td></tr>
+      <tr><td>36</td><td><span class="code-id">-&gt;</span></td><td><span class="badge badge-token">CONECTORES</span></td><td>Asigna el resultado del comando a una variable.</td><td>18</td><td>46</td></tr>
+      <tr><td>37</td><td><span class="code-id">hallazgos</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>18</td><td>49</td></tr>
+      <tr><td>38</td><td><span class="code-id">GENERAR</span></td><td><span class="badge badge-token">COMANDO_IA</span></td><td>Solicita a la IA que genere contenido nuevo.</td><td>19</td><td>3</td></tr>
+      <tr><td>39</td><td><span class="code-id">reporte</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>19</td><td>11</td></tr>
+      <tr><td>40</td><td><span class="code-id">DESDE</span></td><td><span class="badge badge-token">CONECTORES</span></td><td>Indica la fuente o especificación base.</td><td>19</td><td>19</td></tr>
+      <tr><td>41</td><td><span class="code-id">tendencias</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>19</td><td>25</td></tr>
+      <tr><td>42</td><td><span class="code-id">+</span></td><td><span class="badge badge-token">OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</span></td><td>Operador de concatenación o suma.</td><td>19</td><td>36</td></tr>
+      <tr><td>43</td><td><span class="code-id">hallazgos</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>19</td><td>38</td></tr>
+      <tr><td>44</td><td><span class="code-id">-&gt;</span></td><td><span class="badge badge-token">CONECTORES</span></td><td>Asigna el resultado del comando a una variable.</td><td>19</td><td>48</td></tr>
+      <tr><td>45</td><td><span class="code-id">salida</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>19</td><td>51</td></tr>
+      <tr><td>46</td><td><span class="code-id">}</span></td><td><span class="badge badge-token">OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</span></td><td>Llave de cierre de bloque.</td><td>20</td><td>1</td></tr>
+      <tr><td>47</td><td><span class="code-id">AGENTE</span></td><td><span class="badge badge-token">PALABRA_RESERVADA</span></td><td>Declara un agente: la unidad que agrupa contexto, variables y comandos.</td><td>22</td><td>1</td></tr>
+      <tr><td>48</td><td><span class="code-id">redactor</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>22</td><td>8</td></tr>
+      <tr><td>49</td><td><span class="code-id">{</span></td><td><span class="badge badge-token">OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</span></td><td>Llave de apertura de bloque.</td><td>22</td><td>17</td></tr>
+      <tr><td>50</td><td><span class="code-id">contexto</span></td><td><span class="badge badge-token">PALABRA_RESERVADA</span></td><td>Define el rol que asumirá la IA dentro del agente.</td><td>23</td><td>3</td></tr>
+      <tr><td>51</td><td><span class="code-id">=</span></td><td><span class="badge badge-token">OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</span></td><td>Operador de asignación.</td><td>23</td><td>12</td></tr>
+      <tr><td>52</td><td><span class="code-id">"Eres un redactor creativo
+
+  variable tema = "</span></td><td><span class="badge badge-token">CADENA</span></td><td>Token no reconocido</td><td>23</td><td>14</td></tr>
+      <tr><td>53</td><td><span class="code-id">inteligencia</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>25</td><td>20</td></tr>
+      <tr><td>54</td><td><span class="code-id">artificial</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>25</td><td>33</td></tr>
+      <tr><td>55</td><td><span class="code-id">en</span></td><td><span class="badge badge-token">CONECTORES</span></td><td>Indica un parámetro del comando (idioma, formato, entorno).</td><td>25</td><td>44</td></tr>
+      <tr><td>56</td><td><span class="code-id">Guatemala</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>25</td><td>47</td></tr>
+      <tr><td>57</td><td><span class="code-id">"
+
+  GENERAR articulo DESDE tema -&gt; borrador
+  RESUMIR borrador EN 100 palabras -&gt; resumen?
+  TRADUCIR resumen EN "</span></td><td><span class="badge badge-token">CADENA</span></td><td>Token no reconocido</td><td>25</td><td>56</td></tr>
+      <tr><td>58</td><td><span class="code-id">ingles</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>29</td><td>24</td></tr>
+      <tr><td>59</td><td><span class="code-id">-&gt;</span></td><td><span class="badge badge-token">CONECTORES</span></td><td>Asigna el resultado del comando a una variable.</td><td>29</td><td>32</td></tr>
+      <tr><td>60</td><td><span class="code-id">final</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>29</td><td>35</td></tr>
+      <tr><td>61</td><td><span class="code-id">}</span></td><td><span class="badge badge-token">OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES</span></td><td>Llave de cierre de bloque.</td><td>30</td><td>1</td></tr>
+      <tr><td>62</td><td><span class="code-id">EJECUTAR</span></td><td><span class="badge badge-token">PALABRA_RESERVADA</span></td><td>Corre un agente previamente definido.</td><td>32</td><td>1</td></tr>
+      <tr><td>63</td><td><span class="code-id">analista</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>32</td><td>10</td></tr>
+      <tr><td>64</td><td><span class="code-id">EJECUTAR</span></td><td><span class="badge badge-token">PALABRA_RESERVADA</span></td><td>Corre un agente previamente definido.</td><td>33</td><td>1</td></tr>
+      <tr><td>65</td><td><span class="code-id">redactor</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>33</td><td>10</td></tr>
+      <tr><td>66</td><td><span class="code-id">EXPORTAR</span></td><td><span class="badge badge-token">PALABRA_RESERVADA</span></td><td>Indica qué resultados se incluyen en el prompt final.</td><td>34</td><td>1</td></tr>
+      <tr><td>67</td><td><span class="code-id">salida</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>34</td><td>10</td></tr>
+      <tr><td>68</td><td><span class="code-id">,</span></td><td><span class="badge badge-token">CONECTORES</span></td><td>Separador de elementos.</td><td>34</td><td>16</td></tr>
+      <tr><td>69</td><td><span class="code-id">final</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>34</td><td>18</td></tr>
+      <tr><td>70</td><td><span class="code-id">extra</span></td><td><span class="badge badge-token">ID</span></td><td>Token no reconocido</td><td>34</td><td>26</td></tr>
+    </tbody>
+  </table>
+  <div class="footer">
+    <span>Compilador PromptZal &bull; Reporte de Tokens</span>
+  </div>
+</div>
 </body>
 </html>
