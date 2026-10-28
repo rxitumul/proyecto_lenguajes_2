@@ -42,7 +42,7 @@ public class ast extends javax.swing.JPanel {
 
         html.append("<div style='background-color:#211417; border:2px solid #da3633; border-radius:8px; padding:16px; margin-bottom:16px;'>");
         html.append("<div style='color:#ff7b72; font-weight:bold; font-size:16px; margin-bottom:8px;'>")
-            .append("❌ ERROR EN LA GENERACIÓN DEL AST (Fase ").append(tipoError != null ? tipoError.toUpperCase() : "ANÁLISIS").append(")")
+            .append("ERROR EN LA GENERACIÓN DEL AST (Fase ").append(tipoError != null ? tipoError.toUpperCase() : "ANÁLISIS").append(")")
             .append("</div>");
 
         html.append("<div style='color:#c9d1d9; font-size:13px; margin-bottom:10px;'>")
@@ -72,7 +72,7 @@ public class ast extends javax.swing.JPanel {
                 .append("</div>");
         } else {
             html.append("<div style='color:#8b949e; font-size:12px; font-style:italic;'>")
-                .append("ℹ️ El Árbol de Sintaxis Abstracta no pudo ser construido debido a los errores detectados arriba. Corrija los errores y vuelva a compilar.")
+                .append("El Árbol de Sintaxis Abstracta no pudo ser construido debido a los errores detectados arriba. Corrija los errores y vuelva a compilar.")
                 .append("</div>");
         }
 

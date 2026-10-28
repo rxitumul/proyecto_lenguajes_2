@@ -1,22 +1,17 @@
-======================================================================
-   ❌ ERROR DE COMPILACIÓN - PROMPTZAL NO GENERADO
-======================================================================
+# Prompt generado con PromptZal
+Modelo destino: claude-sonnet-4-6
+Rol general: analista de datos
+Formato de respuesta: markdown
 
-Fase con error: LÉXICA
-Total de errores detectados: 7
+## Agente: analista
+Contexto: Eres un analista de datos experto
 
-El prompt final no pudo ser generado debido a los siguientes errores:
-----------------------------------------------------------------------
-• ErrorLexico [Lexema: '%', Descripcion: 'Carácter o símbolo no reconocido en el lenguaje Promptzal', Fila: 15, Columna: 22]
-• ErrorLexico [Lexema: '#', Descripcion: 'Carácter o símbolo no reconocido en el lenguaje Promptzal', Fila: 17, Columna: 69]
-• ErrorLexico [Lexema: '$', Descripcion: 'Carácter o símbolo no reconocido en el lenguaje Promptzal', Fila: 19, Columna: 58]
-• ErrorLexico [Lexema: '$', Descripcion: 'Carácter o símbolo no reconocido en el lenguaje Promptzal', Fila: 19, Columna: 59]
-• ErrorLexico [Lexema: '$', Descripcion: 'Carácter o símbolo no reconocido en el lenguaje Promptzal', Fila: 19, Columna: 60]
-• ErrorLexico [Lexema: '"', Descripcion: 'Carácter no reconocido en el lenguaje Promptzal', Fila: 29, Columna: 30]
-• ErrorLexico [Lexema: '&', Descripcion: 'Carácter o símbolo no reconocido en el lenguaje Promptzal', Fila: 34, Columna: 24]
-----------------------------------------------------------------------
-Acciones sugeridas:
-1. Revise los detalles en la pestaña 'Errores Reportados' o 'Terminal'.
-2. Corrija los errores en el editor de código.
-3. Vuelva a presionar 'Copilar' para generar el PromptZal.
-======================================================================
+Variables disponibles:
+- ventas: contenido del archivo "ventas.csv" (adjuntar el archivo)
+
+Instrucciones:
+1. Basandote en ventas, responde: Cuales son las 3 tendencias principales? Guarda la respuesta como tendencias.
+2. Resume tendencias en un maximo de 100 palabras. Guarda el resultado como resumen.
+
+## Resultado solicitado
+- resumen

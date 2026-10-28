@@ -670,7 +670,7 @@ public class MenuEditor extends javax.swing.JFrame {
     private String generarMensajeErrorPromptzal(String fase, List<String> detallesErrores) {
         StringBuilder sb = new StringBuilder();
         sb.append("======================================================================\n");
-        sb.append("   ❌ ERROR DE COMPILACIÓN - PROMPTZAL NO GENERADO\n");
+        sb.append("   [ERROR] ERROR DE COMPILACIÓN - PROMPTZAL NO GENERADO\n");
         sb.append("======================================================================\n\n");
         sb.append("Fase con error: ").append(fase.toUpperCase()).append("\n");
         sb.append("Total de errores detectados: ").append(detallesErrores != null ? detallesErrores.size() : 0).append("\n\n");

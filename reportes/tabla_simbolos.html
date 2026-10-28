@@ -238,10 +238,10 @@
     <p class="sub">Detalle de Agentes, Variables locales y Directivas registradas con su tipo, ámbito y línea de declaración.</p>
   </div>
   <div class="stats-container">
-    <div class="stat-card stat-total"><div class="val">0</div><div class="lbl">Total de Símbolos</div></div>
-    <div class="stat-card stat-agentes"><div class="val">0</div><div class="lbl">Agentes Declarados</div></div>
-    <div class="stat-card stat-vars"><div class="val">0</div><div class="lbl">Variables Locales</div></div>
-    <div class="stat-card stat-dirs"><div class="val">0</div><div class="lbl">Directivas Globales</div></div>
+    <div class="stat-card stat-total"><div class="val">7</div><div class="lbl">Total de Símbolos</div></div>
+    <div class="stat-card stat-agentes"><div class="val">1</div><div class="lbl">Agentes Declarados</div></div>
+    <div class="stat-card stat-vars"><div class="val">3</div><div class="lbl">Variables Locales</div></div>
+    <div class="stat-card stat-dirs"><div class="val">3</div><div class="lbl">Directivas Globales</div></div>
   </div>
   <div class="charts-row">
     <div class="chart-card">
@@ -253,22 +253,97 @@
       <div class="chart-wrapper"><canvas id="chartBarras"></canvas></div>
     </div>
   </div>
-  <div class="empty-box">
-    No se registraron símbolos en la tabla. Verifique que el programa se haya compilado correctamente.
-  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Identificador</th>
+        <th>Tipo de Símbolo</th>
+        <th>Ámbito (Scope)</th>
+        <th>Línea (Fila)</th>
+        <th>Columna</th>
+        <th>Valor Inicial / Contexto</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><span class="code-id">@modelo</span></td>
+        <td><span class="badge badge-directiva">DIRECTIVA</span></td>
+        <td><span class="badge-global">GLOBAL</span></td>
+        <td><strong>1</strong></td>
+        <td>1</td>
+        <td class="val-cell" title="&quot;claude-sonnet-4-6&quot;">&quot;claude-sonnet-4-6&quot;</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><span class="code-id">@rol</span></td>
+        <td><span class="badge badge-directiva">DIRECTIVA</span></td>
+        <td><span class="badge-global">GLOBAL</span></td>
+        <td><strong>2</strong></td>
+        <td>1</td>
+        <td class="val-cell" title="&quot;analista de datos&quot;">&quot;analista de datos&quot;</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><span class="code-id">@formato</span></td>
+        <td><span class="badge badge-directiva">DIRECTIVA</span></td>
+        <td><span class="badge-global">GLOBAL</span></td>
+        <td><strong>3</strong></td>
+        <td>1</td>
+        <td class="val-cell" title="&quot;markdown&quot;">&quot;markdown&quot;</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><span class="code-id">analista</span></td>
+        <td><span class="badge badge-agente">AGENTE</span></td>
+        <td><span class="badge-global">GLOBAL</span></td>
+        <td><strong>6</strong></td>
+        <td>1</td>
+        <td class="val-cell" title="&quot;Eres un analista de datos experto&quot;">&quot;Eres un analista de datos experto&quot;</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><span class="code-id">ventas</span></td>
+        <td><span class="badge badge-variable">VARIABLE</span></td>
+        <td><span class="badge-local">Agente: analista</span></td>
+        <td><strong>8</strong></td>
+        <td>5</td>
+        <td class="val-cell" title="CARGAR(&quot;ventas.csv&quot;)">CARGAR(&quot;ventas.csv&quot;)</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><span class="code-id">tendencias</span></td>
+        <td><span class="badge badge-variable">VARIABLE</span></td>
+        <td><span class="badge-local">Agente: analista</span></td>
+        <td><strong>9</strong></td>
+        <td>5</td>
+        <td class="val-cell" title="Resultado de PREGUNTAR">Resultado de PREGUNTAR</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td><span class="code-id">resumen</span></td>
+        <td><span class="badge badge-variable">VARIABLE</span></td>
+        <td><span class="badge-local">Agente: analista</span></td>
+        <td><strong>10</strong></td>
+        <td>5</td>
+        <td class="val-cell" title="Resultado de RESUMIR">Resultado de RESUMIR</td>
+      </tr>
+    </tbody>
+  </table>
   <div class="footer">
-    Generado automáticamente por el compilador PromptZal • 28/10/2026 01:47:03
+    Generado automáticamente por el compilador PromptZal • 28/10/2026 02:10:17
   </div>
 </div>
 <script>
 (function() {
   Chart.defaults.color = '#8b949e';
   Chart.defaults.borderColor = '#30363d';
-  const dAgentes = 0;
-  const dVars = 0;
-  const dDirs = 0;
-  const dGlobales = 0;
-  const dLocales = 0;
+  const dAgentes = 1;
+  const dVars = 3;
+  const dDirs = 3;
+  const dGlobales = 4;
+  const dLocales = 3;
   const total = dAgentes + dVars + dDirs;
   new Chart(document.getElementById('chartDona'), {
     type: 'doughnut',

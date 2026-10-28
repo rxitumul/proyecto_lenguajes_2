@@ -13,7 +13,20 @@ import com.mycompany.lenguajesproyecto2.frontEnd.PaginaPrincipal.MenuEditor;
 public class LenguajesProyecto2 {
 
     public static void main(String[] args) {
-        MenuEditor menu = new MenuEditor();
-        menu.setVisible(true);
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception ignored) {
+        }
+
+        java.awt.EventQueue.invokeLater(() -> {
+            MenuEditor menu = new MenuEditor();
+            menu.setLocationRelativeTo(null);
+            menu.setVisible(true);
+        });
     }
 }
