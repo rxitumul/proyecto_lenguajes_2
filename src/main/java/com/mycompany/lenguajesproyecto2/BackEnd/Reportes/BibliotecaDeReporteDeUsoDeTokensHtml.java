@@ -20,27 +20,14 @@ public class BibliotecaDeReporteDeUsoDeTokensHtml {
     }
 
     public StringBuilder generarReporteEstadistico() {
-
         StringBuilder html = new StringBuilder();
+        ReportesHtml.appendHead(html, "Reporte Estadístico - PromptZal", true);
 
-        html.append("<!DOCTYPE html>\n<html>\n<head>\n <meta charset=\"UTF-8\">\n");
-        html.append("<title>Reporte Estadístico - PromptZal</title>\n");
-        html.append("<script src=\"https://cdn.jsdelivr.net/npm/chart.js\"></script>\n");
-
-        html.append("<style>\n");
-        html.append(
-                "  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d1117; color: #c9d1d9; margin: 0; padding: 30px; }\n");
-        html.append(
-                "  .container { max-width: 1100px; margin: auto; background: #161b22; padding: 25px; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); border: 1px solid #30363d; }\n");
-        html.append(
-                "  h1 { color: #58a6ff; border-bottom: 2px solid #30363d; padding-bottom: 10px; margin-top: 0; font-size: 24px; text-align: center; }\n");
-        html.append(
-                "  .chart-container { width: 75%; margin: 30px auto; background-color: #161b22; padding: 20px; border-radius: 8px; border: 1px solid #30363d; }\n");
-        html.append("</style>\n");
-
-        html.append("</head>\n<body>\n");
         html.append("<div class=\"container\">\n");
-        html.append("<h1>Reporte Estadístico de Análisis</h1>\n");
+        html.append("  <div class=\"header\">\n");
+        html.append("    <h1>Reporte Estadístico de Análisis</h1>\n");
+        html.append("    <p class=\"sub\">Distribución de tokens y elementos del lenguaje procesados.</p>\n");
+        html.append("  </div>\n");
 
         html.append("<div class=\"chart-container\">\n");
         html.append("<canvas id=\"estadisticasChart\"></canvas>\n");
@@ -96,8 +83,7 @@ public class BibliotecaDeReporteDeUsoDeTokensHtml {
         html.append("  });\n");
         html.append("</script>\n");
 
-        html.append("</div>\n</body>\n</html>");
-
+        ReportesHtml.appendFooter(html, "Reporte Estadístico");
         return html;
     }
 

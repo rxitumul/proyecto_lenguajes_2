@@ -1,17 +1,16 @@
 # Prompt generado con PromptZal
-Modelo destino: claude-sonnet-4-6
-Rol general: analista de datos
+Modelo destino: gemini-1.5-flash
+Rol general: asistente de programacion
 Formato de respuesta: markdown
 
-## Agente: analista
-Contexto: Eres un analista de datos experto
+## Agente: desarrollador
+Contexto: Eres un experto en refactorización de código Java
 
 Variables disponibles:
-- ventas: contenido del archivo "ventas.csv" (adjuntar el archivo)
+- codigoSucio: public void test() { int a = 1; }
 
 Instrucciones:
-1. Basandote en ventas, responde: Cuales son las 3 tendencias principales? Guarda la respuesta como tendencias.
-2. Resume tendencias en un maximo de 100 palabras. Guarda el resultado como resumen.
+1. Analiza codigoSucio. Guarda el resultado como codigoLimpio.
 
 ## Resultado solicitado
-- resumen
+- codigoLimpio

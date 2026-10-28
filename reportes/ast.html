@@ -5,78 +5,229 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PromptZal - Reporte del Árbol de Sintaxis Abstracta (AST)</title>
   <style>
-    :root {
-      --bg-dark: #0d1117;
-      --bg-card: #161b22;
-      --border-color: #30363d;
-      --text-main: #c9d1d9;
-      --text-muted: #8b949e;
-      --accent-blue: #58a6ff;
-      --accent-green: #3fb950;
-      --accent-purple: #bc8cff;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      margin: 0;
-      padding: 30px 20px;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    .header {
-      border-bottom: 2px solid var(--border-color);
-      padding-bottom: 20px;
-      margin-bottom: 25px;
-    }
-    h1 {
-      color: var(--accent-blue);
-      margin: 0 0 10px 0;
-      font-size: 26px;
-    }
-    p.sub {
-      color: var(--text-muted);
-      margin: 0;
-      font-size: 14px;
-    }
-    .section-title {
-      color: #f0f6fc;
-      font-size: 18px;
-      margin: 30px 0 12px 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .code-block {
-      background: #0d1117;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 20px;
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 13px;
-      line-height: 1.6;
-      color: #7ee787;
-      white-space: pre;
-      overflow-x: auto;
-    }
-    .dot-block {
-      color: #a5d6ff;
-    }
-    .footer {
-      margin-top: 30px;
-      padding-top: 15px;
-      border-top: 1px solid var(--border-color);
-      font-size: 12px;
-      color: var(--text-muted);
-      text-align: right;
-    }
+  :root {
+    --bg-dark: #0d1117;
+    --bg-card: #161b22;
+    --bg-hover: #1f242c;
+    --border-color: #30363d;
+    --text-main: #c9d1d9;
+    --text-muted: #8b949e;
+    --accent-blue: #58a6ff;
+    --accent-green: #3fb950;
+    --accent-purple: #bc8cff;
+    --accent-orange: #d29922;
+    --accent-red: #f85149;
+    --accent-cyan: #39c5cf;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    margin: 0;
+    padding: 30px 20px;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+  .header {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+  }
+  h1 {
+    color: var(--accent-blue);
+    margin: 0 0 10px 0;
+    font-size: 26px;
+  }
+  p.sub {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 14px;
+  }
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+  .stat-card {
+    background: #0d1117;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px 20px;
+  }
+  .stat-card .val {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .stat-card .lbl {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+  }
+  .stat-total .val { color: var(--accent-blue); }
+  .stat-error .val { color: var(--accent-red); }
+  .stat-agentes .val { color: var(--accent-purple); }
+  .stat-vars .val { color: var(--accent-green); }
+  .stat-dirs .val { color: var(--accent-cyan); }
+  .stat-lex .val { color: var(--accent-orange); }
+  .stat-sin .val { color: var(--accent-purple); }
+  .stat-sem .val { color: #f0883e; }
+
+  .charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 25px 0;
+  }
+  @media (max-width: 800px) {
+    .charts-row { grid-template-columns: 1fr; }
+  }
+  .chart-card {
+    background: #0d1117;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .chart-card h3 {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .chart-wrapper {
+    position: relative;
+    height: 230px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 15px;
+  }
+  th, td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+  }
+  th {
+    background: #21262d;
+    color: #f0f6fc;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+  tr:hover {
+    background: var(--bg-hover);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-lexico, .badge-lex { background: rgba(210, 153, 34, 0.2); color: var(--accent-orange); border: 1px solid rgba(210, 153, 34, 0.4); }
+  .badge-sintactico, .badge-sin { background: rgba(188, 140, 255, 0.2); color: var(--accent-purple); border: 1px solid rgba(188, 140, 255, 0.4); }
+  .badge-semantico, .badge-sem { background: rgba(240, 136, 62, 0.2); color: #f0883e; border: 1px solid rgba(240, 136, 62, 0.4); }
+  .badge-agente { background: rgba(188, 140, 255, 0.2); color: var(--accent-purple); border: 1px solid rgba(188, 140, 255, 0.4); }
+  .badge-variable { background: rgba(63, 185, 80, 0.2); color: var(--accent-green); border: 1px solid rgba(63, 185, 80, 0.4); }
+  .badge-directiva { background: rgba(57, 197, 207, 0.2); color: var(--accent-cyan); border: 1px solid rgba(57, 197, 207, 0.4); }
+  .badge-token { background: rgba(88, 166, 255, 0.2); color: var(--accent-blue); border: 1px solid rgba(88, 166, 255, 0.4); }
+  .badge-global { background: rgba(88, 166, 255, 0.15); color: var(--accent-blue); padding: 3px 8px; border-radius: 4px; font-size: 11px; }
+  .badge-local { background: rgba(210, 153, 34, 0.15); color: var(--accent-orange); padding: 3px 8px; border-radius: 4px; font-size: 11px; }
+
+  .code-id, .code-pill {
+    font-family: 'Consolas', 'Courier New', monospace;
+    background: #0d1117;
+    border: 1px solid var(--border-color);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  .val-cell {
+    font-family: 'Consolas', 'Courier New', monospace;
+    color: var(--text-muted);
+    max-width: 350px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .empty-box {
+    background: #0d1117;
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+  .success-box {
+    background: rgba(63, 185, 80, 0.1);
+    border: 1px solid var(--accent-green);
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    color: var(--accent-green);
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 20px;
+  }
+  .section-title {
+    color: #f0f6fc;
+    font-size: 18px;
+    margin: 30px 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .code-block {
+    background: #0d1117;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #7ee787;
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .dot-block { color: #a5d6ff; }
+
+  .no-data, .no-errors {
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin: 20px 0;
+    background: rgba(63, 185, 80, 0.1);
+    border: 1px solid rgba(63, 185, 80, 0.3);
+    color: var(--accent-green);
+  }
+  .no-errors h2, .no-data h2 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+  }
+
+  .footer {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: right;
+  }
   </style>
 </head>
 <body>
@@ -88,21 +239,20 @@
   <div class="section-title"><span>🌳</span> Representación en Texto con Sangrías Jerárquicas</div>
   <div class="code-block">NodoPrograma [Fila: 1, Col: 1]
 ├── Directivas (3)
-│   ├── @modelo = "claude-sonnet-4-6" [Fila: 1, Col: 1]
-│   ├── @rol = "analista de datos" [Fila: 2, Col: 1]
+│   ├── @modelo = "gemini-1.5-flash" [Fila: 1, Col: 1]
+│   ├── @rol = "asistente de programacion" [Fila: 2, Col: 1]
 │   └── @formato = "markdown" [Fila: 3, Col: 1]
 ├── Agentes (1)
-│   └── AGENTE: analista [Fila: 6, Col: 1]
-│       ├── Contexto = "Eres un analista de datos experto"
+│   └── AGENTE: desarrollador [Fila: 9, Col: 1]
+│       ├── Contexto = "Eres un experto en refactorización de código Java"
 │       ├── Variables (1)
-│       │   └── ventas = CARGAR("ventas.csv") [Fila: 8, Col: 5]
-│       └── Comandos (2)
-│           ├── PREGUNTAR "Cuales son las 3 tendencias principales?" SOBRE ventas -&gt; tendencias [Fila: 9, Col: 5]
-│           └── RESUMIR tendencias EN 100 palabras -&gt; resumen [Fila: 10, Col: 5]
+│       │   └── codigoSucio = "public void test() { int a = 1; }" [Fila: 11, Col: 1]
+│       └── Comandos (1)
+│           └── ANALIZAR codigoSucio EN "estilo limpio y buenas practicas" -&gt; codigoLimpio [Fila: 12, Col: 1]
 ├── Ejecuciones (1)
-│   └── EJECUTAR analista [Fila: 13, Col: 10]
-└── Exportar [Fila: 14, Col: 1]
-    └── resumen [Fila: 14, Col: 10]
+│   └── EJECUTAR desarrollador [Fila: 15, Col: 10]
+└── Exportar [Fila: 16, Col: 1]
+    └── codigoLimpio [Fila: 16, Col: 10]
 </div>
   <div class="section-title"><span>📊</span> Definición en Graphviz DOT (Graficable)</div>
   <div class="code-block dot-block">digraph AST_PromptZal {
@@ -114,40 +264,38 @@
   node_1 [label="Programa\nPromptZal", fillcolor="#1f6feb", shape=ellipse];
   node_2 [label="Directivas", fillcolor="#238636"];
   node_1 -&gt; node_2;
-  node_3 [label="@modelo\n\"claude-sonnet-4-6\"", fillcolor="#2ea043"];
+  node_3 [label="@modelo\n\"gemini-1.5-flash\"", fillcolor="#2ea043"];
   node_2 -&gt; node_3;
-  node_4 [label="@rol\n\"analista de datos\"", fillcolor="#2ea043"];
+  node_4 [label="@rol\n\"asistente de programacion\"", fillcolor="#2ea043"];
   node_2 -&gt; node_4;
   node_5 [label="@formato\n\"markdown\"", fillcolor="#2ea043"];
   node_2 -&gt; node_5;
   node_6 [label="Agentes", fillcolor="#8957e5"];
   node_1 -&gt; node_6;
-  node_7 [label="AGENTE: analista", fillcolor="#a371f7"];
+  node_7 [label="AGENTE: desarrollador", fillcolor="#a371f7"];
   node_6 -&gt; node_7;
-  node_8 [label="contexto = \"\"Eres un analista de datos experto\"\"", fillcolor="#30363d", fontcolor="#c9d1d9"];
+  node_8 [label="contexto = \"\"Eres un experto en refactorización de código Java\"\"", fillcolor="#30363d", fontcolor="#c9d1d9"];
   node_7 -&gt; node_8;
   node_9 [label="Variables", fillcolor="#238636"];
   node_7 -&gt; node_9;
-  node_10 [label="ventas = CARGAR(\"ventas.csv\")", fillcolor="#2ea043"];
+  node_10 [label="codigoSucio = \"public void test() { int a = 1; }\"", fillcolor="#2ea043"];
   node_9 -&gt; node_10;
   node_11 [label="Comandos IA", fillcolor="#d29922"];
   node_7 -&gt; node_11;
-  node_12 [label="PREGUNTAR \"Cuales son las 3 tendencias principales?\" SOBRE ventas -&gt; tendencias", fillcolor="#e3b341", fontcolor="#000000"];
+  node_12 [label="ANALIZAR codigoSucio EN \"estilo limpio y buenas practicas\" -&gt; codigoLimpio", fillcolor="#e3b341", fontcolor="#000000"];
   node_11 -&gt; node_12;
-  node_13 [label="RESUMIR tendencias EN 100 palabras -&gt; resumen", fillcolor="#e3b341", fontcolor="#000000"];
-  node_11 -&gt; node_13;
-  node_14 [label="Ejecuciones", fillcolor="#da3633"];
-  node_1 -&gt; node_14;
-  node_15 [label="EJECUTAR analista", fillcolor="#f85149"];
-  node_14 -&gt; node_15;
-  node_16 [label="Exportar", fillcolor="#1f6feb"];
-  node_1 -&gt; node_16;
-  node_17 [label="resumen", fillcolor="#388bfd"];
-  node_16 -&gt; node_17;
+  node_13 [label="Ejecuciones", fillcolor="#da3633"];
+  node_1 -&gt; node_13;
+  node_14 [label="EJECUTAR desarrollador", fillcolor="#f85149"];
+  node_13 -&gt; node_14;
+  node_15 [label="Exportar", fillcolor="#1f6feb"];
+  node_1 -&gt; node_15;
+  node_16 [label="codigoLimpio", fillcolor="#388bfd"];
+  node_15 -&gt; node_16;
 }
 </div>
   <div class="footer">
-    Generado automáticamente por el compilador PromptZal • 27/10/2026 13:06:20
+    Generado automáticamente por el compilador PromptZal • 27/10/2026 19:57:32
   </div>
 </div>
 </body>
