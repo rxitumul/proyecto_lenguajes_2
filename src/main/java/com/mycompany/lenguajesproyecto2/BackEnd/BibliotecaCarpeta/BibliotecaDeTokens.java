@@ -3,7 +3,6 @@ package com.mycompany.lenguajesproyecto2.BackEnd.BibliotecaCarpeta;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Biblioteca Central de Tokens, Símbolos y Reglas del Lenguaje PromptZal.
@@ -18,7 +17,7 @@ public class BibliotecaDeTokens {
 
     private final Map<String, TokensDefinicion> reservadas = new HashMap<>();
     private final Map<String, String> mapeoTerminales = new HashMap<>();
-    private final Map<String, String> traduccionesLenguajeNatural = new HashMap<>();
+
 
     public BibliotecaDeTokens() {
         inicializarDirectivas();
